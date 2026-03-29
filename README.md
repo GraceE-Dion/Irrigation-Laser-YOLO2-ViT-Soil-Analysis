@@ -12,7 +12,7 @@ The following 7 specialized datasets were synchronized and merged into the unifi
 | `soil_moisture_september` | **Temporal (Sept)** | Seasonal moisture variations (Standard). |
 | `soil_moisture_stir_september`| **Temporal (Sept)** | Specialized "Stirred Soil" reflectance. |
 
-| **TOTAL UNIFIED DATA** | **Multi-Spectrum** | **Unified into 11 Moisture Classes (0-10)** |
+**TOTAL UNIFIED DATA: Multi-Spectrum Data fused into 11 Moisture Classes (0-10)**
 ---
 
 ## 🚀 Performance Results
