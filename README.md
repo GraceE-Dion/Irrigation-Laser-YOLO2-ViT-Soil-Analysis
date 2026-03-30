@@ -36,4 +36,7 @@ The Vision Transformer model was subjected to a final validation using a hold-ou
 * **Final Accuracy:** 98.1%
 * **Classes:** 11 Moisture Levels (0-10)
 
- ![Confusion Matrix](https://github.com/user-attachments/assets/69d61f5d-49c4-42de-9fa1-5e2067125687)
+ <p align="center">
+  <img src="images/training_log.png" width="45%" alt="Training Log" />
+  <img src="images/classification_report.png" width="45%" alt="Classification Report" />
+</p>
