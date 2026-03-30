@@ -100,10 +100,10 @@ To validate the model's reliability, we performed an inference test on unseen sa
 | `10_png.rf.b790e7977693b848d5...` | **Level 3** | **69.41%** |
 | `67_png.rf.aca21db4873cfff271...` | **Level 2** | **77.64%** |
 | `59_png.rf.d75e67262ccea2142b...` | **Level 7** | **77.89%** |
-| '10_png.rf.f11efd48b132abb1b1...' | **Level 3** | **69.41%** |
-| '4_png.rf.b4d94b6d449ee1d0f2c...' | **Level 5** | **82.93%** |
-| '52_png.rf.7c8a976a72238c66b5...' | **Level 9** | **80.11%** |
-| '14_png.rf.997b89aea540765ba7...' | **Level 6** | **80.58%** |
+| 10_png.rf.f11efd48b132abb1b1... | **Level 3** | **69.41%** |
+| 4_png.rf.b4d94b6d449ee1d0f2c... | **Level 5** | **82.93%** |
+| 52_png.rf.7c8a976a72238c66b5... | **Level 9** | **80.11%** |
+| 14_png.rf.997b89aea540765ba7... | **Level 6** | **80.58%** |
 
 > **Technical Note:** The long-form filenames indicate the specific Roboflow-exported versions used during the final inference pass. While confidence levels range from 69% to 78%, the categorical predictions match the ground truth, demonstrating the model's ability to generalize across different spectral captures.
 
