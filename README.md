@@ -54,9 +54,11 @@ The Vision Transformer model was subjected to a final validation using a hold-ou
 * **Final Accuracy:** 98.1%
 * **Classes:** 11 Moisture Levels (0-10)
 
- <p align="center">
-  <img src="images/training_log.png" width="45%" alt="Training Log" />
-  <img src="images/classification_report.png" width="45%" alt="Classification Report" />
+<p align="center">
+  <img src="images/training_log.png" width="46%" alt="Training Log" />
+  <img src="images/classification_report.png" width="46%" alt="Classification Report" />
+  <br>
+  <img src="images/training_metrics.png" width="94%" alt="Loss and Accuracy Curves" />
 </p>
 
 ---
