@@ -14,6 +14,7 @@ Instead of simply matching colors, the model analyzes the physical interaction b
 
 •	**Attention-Based Analysis**: Unlike CNNs that look at small pixel clusters, the Self-Attention mechanism in the ViT evaluates the entire laser spread simultaneously. This allows the model to understand the relationship between different parts of the light spread, leading to higher precision.
 
+
 ## 📚 Roboflow Source Datasets
 The following 7 specialized datasets were synchronized and merged into the unified Vision Transformer (ViT) training pipeline:
 
@@ -30,6 +31,7 @@ The following 7 specialized datasets were synchronized and merged into the unifi
 **TOTAL UNIFIED DATA: Multi-Spectrum Data fused into 11 Moisture Classes (0-10)**
 ---
 
+
 ## 🚀 Performance Results
 The Vision Transformer model was subjected to a final validation using a hold-out test set from all 7 merged sources.
 
@@ -40,3 +42,35 @@ The Vision Transformer model was subjected to a final validation using a hold-ou
   <img src="images/training_log.png" width="45%" alt="Training Log" />
   <img src="images/classification_report.png" width="45%" alt="Classification Report" />
 </p>
+
+---
+
+
+## 📊 Training Performance & Convergence
+The Vision Transformer (ViT) was subjected to 10 epochs of training using a Cross-Entropy Loss function on Dual T4 GPUs. The model reached stability rapidly:
+
+| Metric | Initial (Epoch 1) | Final (Epoch 10) |
+| :--- | :---: | :---: |
+| **Validation Loss** | 1.5372 | **0.3695** |
+| **Validation Accuracy** | 85.20% | **98.11%** |
+
+#### **Key Observations:**
+* **Steady Convergence:** The ~76% reduction in loss confirms the model successfully learned the spectral signatures of the laser-soil interaction.
+* **Inference Reliability:** The high diagonal density in the Confusion Matrix (shown above) indicates that even the "hardest" classes (Levels 4 and 5) were identified with high precision.
+* **Zero Drastic Errors:** No extreme misclassifications (e.g., Level 0 confused for Level 10) were observed in the final validation set.
+
+
+## Technical Specification 
+| Parameter | Specification |
+| :--- | :--- |
+| **Model Architecture** | Vision Transformer (ViT-Base) |
+| **Hardware** | Dual NVIDIA T4 GPUs |
+| **Optimizer** | AdamW ($5 \times 10^{-5}$ LR) |
+
+
+## 🏁 Conclusion
+
+This project successfully demonstrates that a **Vision Transformer (ViT)** architecture is highly effective at interpreting the complex spectral patterns created by laser-soil interaction. By achieving a final **Validation Accuracy of 98.11%**, the model proves it can reliably distinguish between 11 different moisture levels (0–10). 
+
+The integration of multi-spectral data (IR, UV, and RGB) allows for a robust classification system that could significantly improve automated irrigation efficiency and water conservation in precision agriculture.
+
