@@ -31,6 +31,22 @@ The following 7 specialized datasets were synchronized and merged into the unifi
 **TOTAL UNIFIED DATA: Multi-Spectrum Data fused into 11 Moisture Classes (0-10)**
 ---
 
+## Data Processing & Methodology: The 6-Stage Pipeline
+
+To ensure the Vision Transformer could accurately generalize moisture levels from complex spectral signatures, the project followed a rigorous 6-stage development pipeline:
+
+1. **Multi-Source Data Acquisition** Raw spectral data was captured simultaneously across three distinct light bands: Infrared (IR), Ultraviolet (UV), and Standard RGB. This triple-source approach ensures that the model receives a holistic view of the laser-soil interaction, capturing thermal and chemical signatures invisible to standard sensors.
+
+2. **Automated Consolidation and Mapping** The asynchronous data streams were synchronized and mapped into a unified tensor format. This stage involved precise spatial alignment (image registration) to ensure that a "patch" in the IR frame corresponded exactly to the same physical coordinate in the UV and RGB frames.
+
+3. **Feature Extraction** Utilizing the Vision Transformer’s patch-based embedding, the model decomposed the consolidated images into 16x16 flattened vector projections. This allowed the architecture to identify high-dimensional features, such as laser refraction intensity and moisture-dependent light scattering.
+
+4. **Model Specialization** The ViT-Base architecture was specialized for this task by modifying the MLP head to classify 11 distinct moisture levels (0–10). This involved fine-tuning the transformer layers to prioritize the spectral fusion of the three input sources.
+
+5. **Training & Real-Time Evaluation** The model underwent 10 epochs of supervised learning on Dual T4 GPUs. Real-time evaluation was performed at the end of each epoch using a partitioned validation set to monitor convergence and prevent overfitting, ensuring the "Attention" weights were stabilizing correctly.
+
+6. **Visualization Results** Final outputs were processed through a Confusion Matrix and Classification Report to visualize model precision. This stage confirmed the model's ability to distinguish between nearly identical moisture levels with 98.11% accuracy.
+
 
 ## 🚀 Performance Results
 The Vision Transformer model was subjected to a final validation using a hold-out test set from all 7 merged sources.
