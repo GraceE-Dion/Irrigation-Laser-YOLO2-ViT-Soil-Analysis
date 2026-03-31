@@ -105,13 +105,25 @@ To validate the model's reliability, we performed an inference test on unseen sa
 | 52_png.rf.7c8a976a72238c66b5... | **Level 9** | **80.11%** |
 | 14_png.rf.997b89aea540765ba7... | **Level 6** | **80.58%** |
 
+<h3 align="center">Visual Inference Validation</h3>
+
 <p align="center">
-  <img src="images/inference_test_1.png" width="80%" alt="Inference Test Case 1" />
-  <img src="images/inference_test_2.png" width="60%" alt="Inference Test Case 2" />
-  <img src="images/inference_test_3.png" width="94%" alt="Inference Test Case 3" />
+  <strong>Test Case 1: Single Image Inference</strong><br>
+  <img src="images/inference_test_1.png" width="120%" alt="Inference Test 1" />
 </p>
+
 <p align="center">
-  <em>Visual Validation: Horizontal arrangement of the three inference test cases.</em>
+  <strong>Test Case 2: Batch Processing (3 Samples)</strong><br>
+  <img src="images/inference_test_2.png" width="60%" alt="Inference Test 2" />
+</p>
+
+<p align="center">
+  <strong>Test Case 3: Combined Validation (5 Samples)</strong><br>
+  <img src="images/inference_test_3.png" width="85%" alt="Inference Test 3" />
+</p>
+
+<p align="center">
+  <em>Note: Visual confirmation of predicted moisture levels and confidence scores.</em>
 </p>
 
 > **Technical Note:** The long-form filenames indicate the specific Roboflow-exported versions used during the final inference pass. While confidence levels range from 69% to 78%, the categorical predictions match the ground truth, demonstrating the model's ability to generalize across different spectral captures.
