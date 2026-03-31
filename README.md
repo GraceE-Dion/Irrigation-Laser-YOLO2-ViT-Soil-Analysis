@@ -105,6 +105,15 @@ To validate the model's reliability, we performed an inference test on unseen sa
 | 52_png.rf.7c8a976a72238c66b5... | **Level 9** | **80.11%** |
 | 14_png.rf.997b89aea540765ba7... | **Level 6** | **80.58%** |
 
+<p align="center">
+  <img src="images/inference_test_1.png" width="80%" alt="Inference Test Case 1" />
+  <img src="images/inference_test_2.png" width="60%" alt="Inference Test Case 2" />
+  <img src="images/inference_test_3.png" width="94%" alt="Inference Test Case 3" />
+</p>
+<p align="center">
+  <em>Visual Validation: Horizontal arrangement of the three inference test cases.</em>
+</p>
+
 > **Technical Note:** The long-form filenames indicate the specific Roboflow-exported versions used during the final inference pass. While confidence levels range from 69% to 78%, the categorical predictions match the ground truth, demonstrating the model's ability to generalize across different spectral captures.
 
 **Inference Validation**: To confirm real-world viability, the model was tested against unseen samples from all 7 merged datasets. The Self-Attention mechanism demonstrated high precision in "Spectral Fusion," effectively prioritizing Infrared (IR) data for thermal moisture signatures while using RGB for spatial context. Even in challenging "Stirred Soil" scenarios, the model 
