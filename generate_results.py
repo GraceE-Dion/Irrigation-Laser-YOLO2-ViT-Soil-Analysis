@@ -81,3 +81,44 @@ plt.savefig('inference_results.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 print("✅ Inference visualization saved as inference_results.png")
+
+# --- PART C: 7-LOCKED IMAGES FOR MAPPING CODE ---
+import os
+from PIL import Image
+
+search_dirs = ['/kaggle/working/', '/kaggle/input/']
+
+targets = [
+    "10_png.rf.f11efd", "52_png.rf.7c8a97", "14_png.rf.997b89", 
+    "4_png.rf.b4d94b", "67_png.rf.aca21d", "59_png.rf.d75e67", "10_png.rf.b790e7"
+]
+print(f"{'SAMPLE':<12} | {'DATASET VERSION':<20} | {'ORIGINAL FILENAME'}")
+print("-" * 80)
+
+for i, target_id in enumerate(targets):
+    found = False
+    dest_name = f"soil_sample_{i+1}.jpg"
+    
+    for start_dir in search_dirs:
+        if found: break
+        for root, dirs, files in os.walk(start_dir):
+            if found: break
+            for filename in files:
+                if filename.startswith(target_id):
+                    # Extract the version name from the path (e.g., v4-ir)
+                    path_parts = root.split('/')
+                    version = path_parts[-3] if len(path_parts) > 3 else "root"
+                    
+                    source = os.path.join(root, filename)
+                    img = Image.open(source).convert('RGB')
+                    img.save(f'/kaggle/working/{dest_name}')
+                    
+                    print(f"{dest_name:<12} | {version:<20} | {filename}")
+                    found = True
+                    break
+            
+    if not found:
+        print(f"soil_sample_{i+1:<5} | {'NOT FOUND':<20} | {target_id}")
+
+print("-" * 80)
+print("All files saved to /kaggle/working/ sidebar.")
