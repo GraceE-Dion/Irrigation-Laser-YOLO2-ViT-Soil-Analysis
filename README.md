@@ -136,7 +136,20 @@ To validate the model's reliability, we performed an inference test on unseen sa
 <hr>
 
 
- **Technical Note:** The long-form filenames indicate the specific Roboflow-exported versions used during the final inference pass. While confidence levels range from 69% to 78%, the categorical predictions match the ground truth, demonstrating the model's ability to generalize across different spectral captures.
+ **Technical Note:** The long-form filenames indicate the specific Roboflow-exported versions used during the final inference pass. While confidence levels range from 69% to 82%, the categorical predictions match the ground truth, demonstrating the model's ability to generalize across different spectral captures.
+
+**Observation**: Users may notice that re-running the inference code produces a different set of images and moisture predictions than those shown in this documentation.
+
+**Technical Justification**: This is due to the Dynamic Data Retrieval logic used in the testing scripts:
+
+   •  Random Sampling: The batch inference script utilizes random.sample() to pull from the test directory, ensuring the model is evaluated on various data 
+      points rather than a fixed subset.
+      
+   •  Unordered File Walking: The single inference script uses os.walk(), which retrieves files based on their physical storage order on the disk. This order 
+      can change when the environment is reset or the dataset is re-indexed.
+
+**Documentation Consistency**: The 7 soil samples showcased in this README have been manually mapped and preserved using their unique Roboflow hashes 
+(UUIDs) to ensure a stable, verifiable link between the raw input data and the reported model performance metrics.
 
 **Inference Validation**: To confirm real-world viability, the model was tested against unseen samples from all 7 merged datasets. The Self-Attention mechanism demonstrated high precision in "Spectral Fusion," effectively prioritizing Infrared (IR) data for thermal moisture signatures while using RGB for spatial context. Even in challenging "Stirred Soil" scenarios, the model 
 maintained high confidence by focusing on micro-texture refraction rather than simple color matching.
