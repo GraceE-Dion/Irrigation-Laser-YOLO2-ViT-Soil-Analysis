@@ -90,6 +90,7 @@ The rapid convergence is driven by the **Vision Transformer's** ability to proce
 * **Class Precision:** The Confusion Matrix shows high diagonal density, meaning the model accurately distinguishes between similar moisture levels (e.g., Level 4 vs. Level 5).
 * **Reliability:** No "Extreme Errors" (e.g., confusing dry Level 0 with saturated Level 10) were observed, making this viable for real-world automated irrigation.
 
+---
 
 ## 🧪 Real-World Inference Test (Multi-Source Validation)
 
