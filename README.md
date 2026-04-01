@@ -98,7 +98,7 @@ To validate the model's reliability, we performed an inference test on unseen sa
 
 ### 📊 Detailed Inference Output
 
-| Sample | Dataset Source | Image File Source | Pred. Level | Confidence (%) |
+| Sample | Dataset Source | Image File Source | Soil Moisture Level | Confidence (%) |
 | :--- | :--- | :--- | :---: | :---: |
 | **Sample 1** | `soil-moisture-v4-ir` | `10_png.rf.f11efd48b132abb1b1814e4da5cc8d69.jpg` | **Level 3** | **69.41%** |
 | **Sample 2** | `soil-moisture-v4-uv` | `52_png.rf.7c8a976a72238c66b57917897da25656.jpg` | **Level 9** | **80.11%** |
@@ -138,7 +138,7 @@ To validate the model's reliability, we performed an inference test on unseen sa
 <hr>
 
 
- **Technical Note:** The long-form filenames indicate the specific Roboflow-exported versions used during the final inference pass. While confidence levels range from 69% to 82%, the categorical predictions match the ground truth, demonstrating the model's ability to generalize across different spectral captures.
+ **Technical Note:** The long-form filenames indicate the specific Roboflow-exported versions used during the final inference pass. While confidence levels range from 69% to 82%, the categorical soil moisture level match the ground truth, demonstrating the model's ability to generalize across different spectral captures.
 
 **Observation**: Users may notice that re-running the inference code produces a different set of images and moisture predictions than those shown in this documentation.
 
