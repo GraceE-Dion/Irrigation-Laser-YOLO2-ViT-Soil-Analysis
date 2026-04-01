@@ -165,13 +165,13 @@ maintained high confidence by focusing on micro-texture refraction rather than s
 | **Hardware** | Dual NVIDIA T4 GPUs |
 | **Optimizer** | AdamW ($5 \times 10^{-5}$ LR) |
 
-The model architecture utilizes a pre-trained ViT-Base backbone. During initialization, the original ImageNet classifier head was replaced with a custom linear layer specialized for 11 moisture classes (0–10). This was confirmed by the weight initialization report, ensuring the transformer blocks were fine-tuned specifically to identify spectral diffraction patterns rather than general objects.
+The model architecture utilizes a pre-trained ViT-Base backbone. During initialization, the original ImageNet classifier head was replaced with a custom linear layer specialized for 11 soil moisture classes (0–10). This was confirmed by the weight initialization report, ensuring the transformer blocks were fine-tuned specifically to identify spectral diffraction patterns rather than general objects.
 
 ---
 
 ## 🏁 Conclusion
 
-This project successfully demonstrates that a **Vision Transformer (ViT)** architecture is highly effective at interpreting the complex spectral patterns created by laser-soil interaction. By achieving a final **Validation Accuracy of 98.11%**, the model proves it can reliably distinguish between 11 different moisture levels (0–10). 
+This project successfully demonstrates that a **Vision Transformer (ViT)** architecture is highly effective at interpreting the complex spectral patterns created by laser-soil interaction. By achieving a final **Validation Accuracy of 98.11%**, the model proves it can reliably distinguish between 11 different soil moisture levels (0–10). 
 
 The integration of multi-spectral data (IR, UV, and RGB) allows for a robust classification system that could significantly improve automated irrigation efficiency and water conservation in precision agriculture.
 
