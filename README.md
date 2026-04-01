@@ -3,7 +3,7 @@
 ## **Project Summary**
 
 This project represents a shift from manual, error-prone data handling to a Fully Automated Unified Fine-Tuning Pipeline. By transitioning from standard Convolutional Neural Networks (CNNs) to a Vision Transformer (ViT) architecture, this system classifies soil moisture levels (0–10) with 98% accuracy.
-The core innovation lies in the automated synchronization of 7 disparate datasets, including Infrared (IR), Ultraviolet (UV), and Standard Spectrum, to create a robust model that identifies moisture signatures invisible to the human eye.
+The core innovation lies in the automated synchronization of 7 disparate datasets, including Infrared (IR), Ultraviolet (UV), and Standard Spectrum, to create a robust model that identifies soil moisture signatures invisible to the human eye.
 
 ### **The Logic**
 
@@ -30,13 +30,13 @@ The following 7 specialized datasets were synchronized and merged into the unifi
 | `soil_moisture_september` | **Temporal (Sept)** | Seasonal moisture variations (Standard). |
 | `soil_moisture_stir_september`| **Temporal (Sept)** | Specialized "Stirred Soil" reflectance. |
 
-**TOTAL UNIFIED DATA: Multi-Spectrum Data fused into 11 Moisture Classes (0-10)**
+**TOTAL UNIFIED DATA: Multi-Spectrum Data fused into 11 Moisture Soil Levels (0-10)**
 ---
 
 
 ## Data Processing & Methodology: The 6-Stage Pipeline
 
-To ensure the Vision Transformer could accurately generalize moisture levels from complex spectral signatures, the project followed a rigorous 6-stage development pipeline:
+To ensure the Vision Transformer could accurately generalize soil moisture levels from complex spectral signatures, the project followed a rigorous 6-stage development pipeline:
 
 1. **Multi-Source Data Acquisition** Raw spectral data was captured simultaneously across three distinct light bands: Infrared (IR), Ultraviolet (UV), and Standard RGB. This triple-source approach ensures that the model receives a holistic view of the laser-soil interaction, capturing thermal and chemical signatures invisible to standard sensors.
 
@@ -56,7 +56,7 @@ To ensure the Vision Transformer could accurately generalize moisture levels fro
 The Vision Transformer model was subjected to a final validation using a hold-out test set from all 7 merged sources.
 
 * **Final Accuracy:** 98.1%
-* **Classes:** 11 Moisture Levels (0-10)
+* **Classes:** 11 Moisture Soil Levels (0-10)
 
 <p align="center">
   <img src="images/training_log.png" width="46%" alt="Training Log" />
@@ -87,7 +87,7 @@ The rapid convergence is driven by the **Vision Transformer's** ability to proce
 
 #### 📊 Key Observations:
 * **Steady Convergence:** A ~76% reduction in loss confirms the model successfully mastered the complex spectral signatures of laser-soil interaction.
-* **Class Precision:** The Confusion Matrix shows high diagonal density, meaning the model accurately distinguishes between similar moisture levels (e.g., Level 4 vs. Level 5).
+* **Class Precision:** The Confusion Matrix shows high diagonal density, meaning the model accurately distinguishes between similar moisture levels (e.g., Soil Moisture Level 4 vs. Soil Moisture Level 5).
 * **Reliability:** No "Extreme Errors" (e.g., confusing dry Level 0 with saturated Level 10) were observed, making this viable for real-world automated irrigation.
 
 ---
@@ -98,15 +98,15 @@ To validate the model's reliability, we performed an inference test on unseen sa
 
 ### 📊 Detailed Inference Output
 
-| Sample | Dataset Source | Image File Source | Soil Moisture Level | Confidence (%) |
+| Sample | Dataset Source | Image File Source | Pred. Soil Moisture Level | Confidence (%) |
 | :--- | :--- | :--- | :---: | :---: |
-| **Sample 1** | `soil-moisture-v4-ir` | `10_png.rf.f11efd48b132abb1b1814e4da5cc8d69.jpg` | **Level 3** | **69.41%** |
-| **Sample 2** | `soil-moisture-v4-uv` | `52_png.rf.7c8a976a72238c66b57917897da25656.jpg` | **Level 9** | **80.11%** |
-| **Sample 3** | `soil-moisture-v4-ir` | `14_png.rf.997b89aea540765ba790696a40552d48.jpg` | **Level 6** | **80.58%** |
-| **Sample 4** | `soil-moisture-v4-ir` | `4_png.rf.b4d94b6d449ee1d0f2c4a929003666d9.jpg` | **Level 5** | **82.93%** |
-| **Sample 5** | `soil-moisture-v4-ir` | `67_png.rf.aca21db4873cfff2710189a0b943260c.jpg` | **Level 2** | **77.64%** |
-| **Sample 6** | `soil-moisture-v4-ir` | `59_png.rf.d75e67262ccea2142ba15469e0026e95.jpg` | **Level 7** | **77.89%** |
-| **Sample 7** | `soil-moisture-v4` | `10_png.rf.b790e7977693b848d5f3089be1f6032d.jpg` | **Level 3** | **69.41%** |
+| **Sample 1** | `soil-moisture-v4-ir` | `10_png.rf.f11efd48b132abb1b1814e4da5cc8d69.jpg` | **Soil Moisture Level 3** | **69.41%** |
+| **Sample 2** | `soil-moisture-v4-uv` | `52_png.rf.7c8a976a72238c66b57917897da25656.jpg` | **Soil Moisture Level 9** | **80.11%** |
+| **Sample 3** | `soil-moisture-v4-ir` | `14_png.rf.997b89aea540765ba790696a40552d48.jpg` | **Soil Moisture Level 6** | **80.58%** |
+| **Sample 4** | `soil-moisture-v4-ir` | `4_png.rf.b4d94b6d449ee1d0f2c4a929003666d9.jpg` | **Soil Moisture Level 5** | **82.93%** |
+| **Sample 5** | `soil-moisture-v4-ir` | `67_png.rf.aca21db4873cfff2710189a0b943260c.jpg` | **Soil Moisture Level 2** | **77.64%** |
+| **Sample 6** | `soil-moisture-v4-ir` | `59_png.rf.d75e67262ccea2142ba15469e0026e95.jpg` | **Soil Moisture Level 7** | **77.89%** |
+| **Sample 7** | `soil-moisture-v4` | `10_png.rf.b790e7977693b848d5f3089be1f6032d.jpg` | **Soil Moisture Level 3** | **69.41%** |
 
 ---
 
@@ -165,7 +165,7 @@ maintained high confidence by focusing on micro-texture refraction rather than s
 | **Hardware** | Dual NVIDIA T4 GPUs |
 | **Optimizer** | AdamW ($5 \times 10^{-5}$ LR) |
 
-The model architecture utilizes a pre-trained ViT-Base backbone. During initialization, the original ImageNet classifier head was replaced with a custom linear layer specialized for 11 soil moisture classes (0–10). This was confirmed by the weight initialization report, ensuring the transformer blocks were fine-tuned specifically to identify spectral diffraction patterns rather than general objects.
+The model architecture utilizes a pre-trained ViT-Base backbone. During initialization, the original ImageNet classifier head was replaced with a custom linear layer specialized for 11 soil moisture levels (0–10). This was confirmed by the weight initialization report, ensuring the transformer blocks were fine-tuned specifically to identify spectral diffraction patterns rather than general objects.
 
 ---
 
