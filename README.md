@@ -98,49 +98,122 @@ To validate the model's reliability, we performed an inference test on unseen sa
 
 ### 📊 Detailed Inference Output
 
-| Sample | Dataset Source | Image File Source | Pred. Soil Moisture Level | Confidence (%) |
-| :--- | :--- | :--- | :---: | :---: |
-| **Sample 1** | `soil-moisture-v4-ir` | `10_png.rf.f11efd48b132abb1b1814e4da5cc8d69.jpg` | **Soil Moisture Level 3** | **69.41%** |
-| **Sample 2** | `soil-moisture-v4-uv` | `52_png.rf.7c8a976a72238c66b57917897da25656.jpg` | **Soil Moisture Level 9** | **80.11%** |
-| **Sample 3** | `soil-moisture-v4-ir` | `14_png.rf.997b89aea540765ba790696a40552d48.jpg` | **Soil Moisture Level 6** | **80.58%** |
-| **Sample 4** | `soil-moisture-v4-ir` | `4_png.rf.b4d94b6d449ee1d0f2c4a929003666d9.jpg` | **Soil Moisture Level 5** | **82.93%** |
-| **Sample 5** | `soil-moisture-v4-ir` | `67_png.rf.aca21db4873cfff2710189a0b943260c.jpg` | **Soil Moisture Level 2** | **77.64%** |
-| **Sample 6** | `soil-moisture-v4-ir` | `59_png.rf.d75e67262ccea2142ba15469e0026e95.jpg` | **Soil Moisture Level 7** | **77.89%** |
-| **Sample 7** | `soil-moisture-v4` | `10_png.rf.b790e7977693b848d5f3089be1f6032d.jpg` | **Soil Moisture Level 3** | **69.41%** |
+<h3 align="center">Multi-spectral ViT: Test Set Input Samples</h3>
 
----
-
-
-<h3 align="center">🛠️ Data Mapping & Input Validation</h3>
-
+<h4 align="center">Dataset 1: Soil Moisture V4</h4>
 <p align="center">
-  <em>Verification log generated during the Kaggle validation session to ensure data integrity.</em><br/>
-  <img src="images/Mapping.jpg" width="80%" alt="Kaggle Mapping Log" />
+  <img src="images/sample_01_soil-moisture-v4" width="24%" />
+  <img src="images/sample_02_soil-moisture-v4" width="24%" />
+  <img src="images/sample_03_soil-moisture-v4" width="24%" />
+  <img src="images/sample_04_soil-moisture-v4" width="24%" />
+</p>
+<p align="center">
+  <img src="images/sample_05_soil-moisture-v4" width="24%" />
+  <img src="images/sample_06_soil-moisture-v4" width="24%" />
+  <img src="images/sample_07_soil-moisture-v4" width="24%" />
+  <img src="images/sample_08_soil-moisture-v4" width="24%" />
 </p>
 
-<br/>
+<hr>
 
-<table align="center">
-  <tr>
-    <td align="center"><img src="images/soil_sample_1.jpg" width="160px"/><br/><b>Sample 1</b></td>
-    <td align="center"><img src="images/soil_sample_2.jpg" width="160px"/><br/><b>Sample 2</b></td>
-    <td align="center"><img src="images/soil_sample_3.jpg" width="160px"/><br/><b>Sample 3</b></td>
-    <td align="center"><img src="images/soil_sample_4.jpg" width="160px"/><br/><b>Sample 4</b></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="images/soil_sample_5.jpg" width="160px"/><br/><b>Sample 5</b></td>
-    <td align="center"><img src="images/soil_sample_6.jpg" width="160px"/><br/><b>Sample 6</b></td>
-    <td align="center"><img src="images/soil_sample_7.jpg" width="160px"/><br/><b>Sample 7</b></td>
-    <td align="center"><em>(End of Set)</em></td>
-  </tr>
-</table>
+<h4 align="center">Dataset 2: Soil Moisture V4 (IR)</h4>
+<p align="center">
+  <img src="images/sample_09_soil-moisture-v4-ir" width="24%" />
+  <img src="images/sample_10_soil-moisture-v4-ir" width="24%" />
+  <img src="images/sample_11_soil-moisture-v4-ir" width="24%" />
+  <img src="images/sample_12_soil-moisture-v4-ir" width="24%" />
+</p>
+<p align="center">
+  <img src="images/sample_13_soil-moisture-v4-ir" width="24%" />
+  <img src="images/sample_14_soil-moisture-v4-ir" width="24%" />
+  <img src="images/sample_15_soil-moisture-v4-ir" width="24%" />
+</p>
 
 <hr>
+
+<h4 align="center">Dataset 3: Soil Moisture V4 (UV)</h4>
+<p align="center">
+  <img src="images/sample_16_soil-moisture-v4-uv" width="24%" />
+  <img src="images/sample_17_soil-moisture-v4-uv" width="24%" />
+  <img src="images/sample_18_soil-moisture-v4-uv" width="24%" />
+  <img src="images/sample_19_soil-moisture-v4-uv" width="24%" />
+</p>
+<p align="center">
+  <img src="images/sample_20_soil-moisture-v4-uv" width="24%" />
+  <img src="images/sample_21_soil-moisture-v4-uv" width="24%" />
+  <img src="images/sample_22_soil-moisture-v4-uv" width="24%" />
+</p>
+
+<hr>
+
+<h4 align="center">Dataset 4: Soil Moisture IR</h4>
+<p align="center">
+  <img src="images/sample_23_soil-moisture-ir" width="24%" />
+  <img src="images/sample_24_soil-moisture-ir" width="24%" />
+  <img src="images/sample_25_soil-moisture-ir" width="24%" />
+  <img src="images/sample_26_soil-moisture-ir" width="24%" />
+</p>
+<p align="center">
+  <img src="images/sample_27_soil-moisture-ir" width="24%" />
+  <img src="images/sample_28_soil-moisture-ir" width="24%" />
+  <img src="images/sample_29_soil-moisture-ir" width="24%" />
+</p>
+
+<hr>
+
+<h4 align="center">Dataset 5: Soil Moisture 5SAGF</h4>
+<p align="center">
+  <img src="images/sample_30_soil-moisture-5sagf" width="24%" />
+  <img src="images/sample_31_soil-moisture-5sagf" width="24%" />
+  <img src="images/sample_32_soil-moisture-5sagf" width="24%" />
+  <img src="images/sample_33_soil-moisture-5sagf" width="24%" />
+</p>
+<p align="center">
+  <img src="images/sample_34_soil-moisture-5sagf" width="24%" />
+  <img src="images/sample_35_soil-moisture-5sagf" width="24%" />
+  <img src="images/sample_36_soil-moisture-5sagf" width="24%" />
+</p>
+
+<hr>
+
+<h4 align="center">Dataset 6: Soil Moisture (September)</h4>
+<p align="center">
+  <img src="images/sample_37_soil_moisture_september" width="24%" />
+  <img src="images/sample_38_soil_moisture_september" width="24%" />
+  <img src="images/sample_39_soil_moisture_september" width="24%" />
+  <img src="images/sample_40_soil_moisture_september" width="24%" />
+</p>
+<p align="center">
+  <img src="images/sample_41_soil_moisture_september" width="24%" />
+  <img src="images/sample_42_soil_moisture_september" width="24%" />
+  <img src="images/sample_43_soil_moisture_september" width="24%" />
+</p>
+
+<hr>
+
+<h4 align="center">Dataset 7: Soil Moisture Stir (September)</h4>
+<p align="center">
+  <img src="images/sample_44_soil_moisture_stir_september" width="24%" />
+  <img src="images/sample_45_soil_moisture_stir_september" width="24%" />
+  <img src="images/sample_46_soil_moisture_stir_september" width="24%" />
+</p>
+<p align="center">
+   <img src="images/sample_47_soil_moisture_stir_september" width="24%" />
+ <img src="images/sample_48_soil_moisture_stir_september" width="24%" />
+</p>
+
+<p align="center">
+  <em>Figure 1: Representative soil samples across 7 multi-spectral datasets used for final model inference.</em>
+</p>
+
+<hr>
+
+<h3 align="center">Detailed Inference Output</h3>
 
 
  **Technical Note:** The long-form filenames indicate the specific Roboflow-exported versions used during the final inference pass. While confidence levels range from 69% to 82%, the categorical soil moisture level match the ground truth, demonstrating the model's ability to generalize across different spectral captures.
 
-**Observation**: Users may notice that re-running the inference code produces a different set of images and moisture predictions than those shown in this documentation.
+**Known Dataset Limitations**: Users may notice that re-running the inference code produces a different set of images and moisture predictions than those shown in this documentation.
 
 **Technical Justification**: This is due to the Dynamic Data Retrieval logic used in the testing scripts:
 
