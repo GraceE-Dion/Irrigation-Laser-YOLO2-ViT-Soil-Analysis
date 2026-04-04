@@ -100,106 +100,106 @@ To validate the model's reliability, we performed an inference test on unseen sa
 
 <h3 align="center">Multi-spectral ViT: Test Set Input Samples</h3>
 
-<h4 align="center">Dataset 1: Soil Moisture V4</h4>
+<h4 align="center">Dataset 1: Soil_Moisture_V4</h4>
 <p align="center">
-  <img src="images/sample_01_soil-moisture-v4" width="24%" />
-  <img src="images/sample_02_soil-moisture-v4" width="24%" />
-  <img src="images/sample_03_soil-moisture-v4" width="24%" />
-  <img src="images/sample_04_soil-moisture-v4" width="24%" />
+  <img src="images/sample_01_soil-moisture-v4.jpg" width="24%" />
+  <img src="images/sample_02_soil-moisture-v4.jpg" width="24%" />
+  <img src="images/sample_03_soil-moisture-v4.jpg" width="24%" />
+  <img src="images/sample_04_soil-moisture-v4.jpg" width="24%" />
 </p>
 <p align="center">
-  <img src="images/sample_05_soil-moisture-v4" width="24%" />
-  <img src="images/sample_06_soil-moisture-v4" width="24%" />
-  <img src="images/sample_07_soil-moisture-v4" width="24%" />
-  <img src="images/sample_08_soil-moisture-v4" width="24%" />
-</p>
-
-<hr>
-
-<h4 align="center">Dataset 2: Soil Moisture V4 (IR)</h4>
-<p align="center">
-  <img src="images/sample_09_soil-moisture-v4-ir" width="24%" />
-  <img src="images/sample_10_soil-moisture-v4-ir" width="24%" />
-  <img src="images/sample_11_soil-moisture-v4-ir" width="24%" />
-  <img src="images/sample_12_soil-moisture-v4-ir" width="24%" />
-</p>
-<p align="center">
-  <img src="images/sample_13_soil-moisture-v4-ir" width="24%" />
-  <img src="images/sample_14_soil-moisture-v4-ir" width="24%" />
-  <img src="images/sample_15_soil-moisture-v4-ir" width="24%" />
+  <img src="images/sample_05_soil-moisture-v4.jpg" width="24%" />
+  <img src="images/sample_06_soil-moisture-v4.jpg" width="24%" />
+  <img src="images/sample_07_soil-moisture-v4.jpg" width="24%" />
+  <img src="images/sample_08_soil-moisture-v4.jpg" width="24%" />
 </p>
 
 <hr>
 
-<h4 align="center">Dataset 3: Soil Moisture V4 (UV)</h4>
+<h4 align="center">Dataset 2: Soil_Moisture_V4_IR</h4>
 <p align="center">
-  <img src="images/sample_16_soil-moisture-v4-uv" width="24%" />
-  <img src="images/sample_17_soil-moisture-v4-uv" width="24%" />
-  <img src="images/sample_18_soil-moisture-v4-uv" width="24%" />
-  <img src="images/sample_19_soil-moisture-v4-uv" width="24%" />
+  <img src="images/sample_09_soil-moisture-v4-ir.jpg" width="24%" />
+  <img src="images/sample_10_soil-moisture-v4-ir.jpg" width="24%" />
+  <img src="images/sample_11_soil-moisture-v4-ir.jpg" width="24%" />
+  <img src="images/sample_12_soil-moisture-v4-ir.jpg" width="24%" />
 </p>
 <p align="center">
-  <img src="images/sample_20_soil-moisture-v4-uv" width="24%" />
-  <img src="images/sample_21_soil-moisture-v4-uv" width="24%" />
-  <img src="images/sample_22_soil-moisture-v4-uv" width="24%" />
-</p>
-
-<hr>
-
-<h4 align="center">Dataset 4: Soil Moisture IR</h4>
-<p align="center">
-  <img src="images/sample_23_soil-moisture-ir" width="24%" />
-  <img src="images/sample_24_soil-moisture-ir" width="24%" />
-  <img src="images/sample_25_soil-moisture-ir" width="24%" />
-  <img src="images/sample_26_soil-moisture-ir" width="24%" />
-</p>
-<p align="center">
-  <img src="images/sample_27_soil-moisture-ir" width="24%" />
-  <img src="images/sample_28_soil-moisture-ir" width="24%" />
-  <img src="images/sample_29_soil-moisture-ir" width="24%" />
+  <img src="images/sample_13_soil-moisture-v4-ir.jpg" width="24%" />
+  <img src="images/sample_14_soil-moisture-v4-ir.jpg" width="24%" />
+  <img src="images/sample_15_soil-moisture-v4-ir.jpg" width="24%" />
 </p>
 
 <hr>
 
-<h4 align="center">Dataset 5: Soil Moisture 5SAGF</h4>
+<h4 align="center">Dataset 3: Soil_Moisture_V4_UV</h4>
 <p align="center">
-  <img src="images/sample_30_soil-moisture-5sagf" width="24%" />
-  <img src="images/sample_31_soil-moisture-5sagf" width="24%" />
-  <img src="images/sample_32_soil-moisture-5sagf" width="24%" />
-  <img src="images/sample_33_soil-moisture-5sagf" width="24%" />
+  <img src="images/sample_16_soil-moisture-v4-uv.jpg" width="24%" />
+  <img src="images/sample_17_soil-moisture-v4-uv.jpg" width="24%" />
+  <img src="images/sample_18_soil-moisture-v4-uv.jpg" width="24%" />
+  <img src="images/sample_19_soil-moisture-v4-uv.jpg" width="24%" />
 </p>
 <p align="center">
-  <img src="images/sample_34_soil-moisture-5sagf" width="24%" />
-  <img src="images/sample_35_soil-moisture-5sagf" width="24%" />
-  <img src="images/sample_36_soil-moisture-5sagf" width="24%" />
-</p>
-
-<hr>
-
-<h4 align="center">Dataset 6: Soil Moisture (September)</h4>
-<p align="center">
-  <img src="images/sample_37_soil_moisture_september" width="24%" />
-  <img src="images/sample_38_soil_moisture_september" width="24%" />
-  <img src="images/sample_39_soil_moisture_september" width="24%" />
-  <img src="images/sample_40_soil_moisture_september" width="24%" />
-</p>
-<p align="center">
-  <img src="images/sample_41_soil_moisture_september" width="24%" />
-  <img src="images/sample_42_soil_moisture_september" width="24%" />
-  <img src="images/sample_43_soil_moisture_september" width="24%" />
+  <img src="images/sample_20_soil-moisture-v4-uv.jpg" width="24%" />
+  <img src="images/sample_21_soil-moisture-v4-uv.jpg" width="24%" />
+  <img src="images/sample_22_soil-moisture-v4-uv.jpg" width="24%" />
 </p>
 
 <hr>
 
-<h4 align="center">Dataset 7: Soil Moisture Stir (September)</h4>
+<h4 align="center">Dataset 4: Soil_Moisture_IR</h4>
 <p align="center">
-  <img src="images/sample_44_soil_moisture_stir_september" width="24%" />
-  <img src="images/sample_45_soil_moisture_stir_september" width="24%" />
-  <img src="images/sample_46_soil_moisture_stir_september" width="24%" />
+  <img src="images/sample_23_soil-moisture-ir.jpg" width="24%" />
+  <img src="images/sample_24_soil-moisture-ir.jpg" width="24%" />
+  <img src="images/sample_25_soil-moisture-ir.jpg" width="24%" />
+  <img src="images/sample_26_soil-moisture-ir.jpg" width="24%" />
 </p>
 <p align="center">
-   <img src="images/sample_47_soil_moisture_stir_september" width="24%" />
- <img src="images/sample_48_soil_moisture_stir_september" width="24%" />
+  <img src="images/sample_27_soil-moisture-ir.jpg" width="24%" />
+  <img src="images/sample_28_soil-moisture-ir.jpg" width="24%" />
+  <img src="images/sample_29_soil-moisture-ir.jpg" width="24%" />
+</p>
+
+<hr>
+
+<h4 align="center">Dataset 5: Soil_Moisture_5SAGF</h4>
+<p align="center">
+  <img src="images/sample_30_soil-moisture-5sagf.jpg" width="24%" />
+  <img src="images/sample_31_soil-moisture-5sagf.jpg" width="24%" />
+  <img src="images/sample_32_soil-moisture-5sagf.jpg" width="24%" />
+  <img src="images/sample_33_soil-moisture-5sagf.jpg" width="24%" />
+</p>
+<p align="center">
+  <img src="images/sample_34_soil-moisture-5sagf.jpg" width="24%" />
+  <img src="images/sample_35_soil-moisture-5sagf.jpg" width="24%" />
+  <img src="images/sample_36_soil-moisture-5sagf.jpg" width="24%" />
+</p>
+
+<hr>
+
+<h4 align="center">Dataset 6: Soil_Moisture_September</h4>
+<p align="center">
+  <img src="images/sample_37_soil_moisture_september.jpg" width="24%" />
+  <img src="images/sample_38_soil_moisture_september.jpg" width="24%" />
+  <img src="images/sample_39_soil_moisture_september.jpg" width="24%" />
+  <img src="images/sample_40_soil_moisture_september.jpg" width="24%" />
+</p>
+<p align="center">
+  <img src="images/sample_41_soil_moisture_september.jpg" width="24%" />
+  <img src="images/sample_42_soil_moisture_september.jpg" width="24%" />
+  <img src="images/sample_43_soil_moisture_september.jpg" width="24%" />
+</p>
+
+<hr>
+
+<h4 align="center">Dataset 7: Soil_Moisture_Stir_September</h4>
+<p align="center">
+  <img src="images/sample_44_soil_moisture_stir_september.jpg" width="24%" />
+  <img src="images/sample_45_soil_moisture_stir_september.jpg" width="24%" />
+  <img src="images/sample_46_soil_moisture_stir_september.jpg" width="24%" />
+</p>
+<p align="center">
+  <img src="images/sample_47_soil_moisture_stir_september.jpg" width="24%" />
+  <img src="images/sample_48_soil_moisture_stir_september.jpg" width="24%" />
 </p>
 
 <p align="center">
