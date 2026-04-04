@@ -1,124 +1,129 @@
-import torch
-import matplotlib.pyplot as plt
-import pandas as pd
-from PIL import Image
-from transformers import ViTForImageClassification, ViTImageProcessor
-
-# 1. Setup Device & Load Model
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model_path = "./models/vit_soil_moisture_final" 
-model = ViTForImageClassification.from_pretrained(model_path).to(device)
-processor = ViTImageProcessor.from_pretrained(model_path)
-model.eval()
-
-# --- PART A: GENERATE TRAINING CURVES ---
-def save_performance_curves(history_csv):
-    df = pd.read_csv(history_csv) # Assumes your Kaggle log is saved as CSV
-    
-    plt.figure(figsize=(12, 5))
-    
-    # Accuracy Plot
-    plt.subplot(1, 2, 1)
-    plt.plot(df['epoch'], df['accuracy'], label='Train Acc', color='#1f77b4', lw=2)
-    plt.plot(df['epoch'], df['val_accuracy'], label='Val Acc', color='#ff7f0e', lw=2)
-    plt.axhline(y=0.9811, color='gold', linestyle='--', label='Target (98.11%)')
-    plt.title('Model Accuracy')
-    plt.legend()
-
-    # Loss Plot
-    plt.subplot(1, 2, 2)
-    plt.plot(df['epoch'], df['loss'], label='Train Loss', color='#d62728', lw=2)
-    plt.plot(df['epoch'], df['val_loss'], label='Val Loss', color='#2ca02c', lw=2)
-    plt.title('Model Loss (Cross-Entropy)')
-    plt.legend()
-
-    plt.tight_layout()
-    plt.savefig('images/training_metrics.png', dpi=300)
-    print("✅ Training curves saved to images/training_metrics.png")
-
-# --- PART B: 7-SOURCE INFERENCE TEST ---
-import torch
+import os
 import random
-import matplotlib.pyplot as plt
-from PIL import Image
+import zipfile
+import numpy as np
+import torch
+import yaml
+from PIL import Image, ImageDraw
 from transformers import ViTForImageClassification, ViTImageProcessor
 
-# 1. Setup & Load
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model_path = "./models/vit_soil_moisture_final"
-model = ViTForImageClassification.from_pretrained(model_path).to(device)
-processor = ViTImageProcessor.from_pretrained(model_path)
+# Setup
+SOURCE_DIR = '/kaggle/working/source_data'
+OUTPUT_DIR = '/kaggle/working/inference_results'
+ZIP_PATH = '/kaggle/working/soil_moisture_inference_50.zip'
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model.to(device)
 model.eval()
 
-# 2. Select 3 Random Images from your Test Set
-# (Adjust 'test_folder' to your actual Kaggle input path)
-import os
-test_folder = "/kaggle/input/soil-moisture-v4/test/images"
-all_images = [os.path.join(test_folder, f) for f in os.listdir(test_folder) if f.endswith(('.jpg', '.png'))]
-selected_images = random.sample(all_images, 3)
+# Class mapping
+mapping = {
+    'soil-moisture-1.0': 'Level 1', 'soil-moisture-2.0': 'Level 2',
+    'soil-moisture-3.0': 'Level 3', 'soil-moisture-5.0': 'Level 5',
+    'soil-moisture-8.2': 'Level 8',
+    '0': 'Level 0', '1': 'Level 1', '2': 'Level 2', '3': 'Level 3',
+    '4': 'Level 4', '5': 'Level 5', '6': 'Level 6', '7': 'Level 7',
+    '8': 'Level 8', '9': 'Level 9', '10': 'Level 10',
+}
 
-# 3. Plotting Setup
-fig, axes = plt.subplots(1, 3, figsize=(18, 6))
-fig.suptitle('Real-World Inference: ViT Multi-Spectral Validation', fontsize=20, y=1.05)
+# Samples per dataset
+samples_per_dataset = {
+    'soil-moisture-v4':             8,
+    'soil-moisture-v4-ir':          7,
+    'soil-moisture-v4-uv':          7,
+    'soil-moisture-ir':             7,
+    'soil-moisture-5sagf':          7,
+    'soil_moisture_september':      7,
+    'soil_moisture_stir_september': 7,
+}
 
-for i, img_path in enumerate(selected_images):
-    image = Image.open(img_path).convert("RGB")
-    inputs = processor(images=image, return_tensors="pt").to(device)
-    
-    with torch.no_grad():
-        outputs = model(**inputs)
-        probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
-        conf, pred = torch.max(probs, dim=1)
+def annotate_image(img, dataset_name, img_id, pred_label, true_label):
+    img = img.convert("RGB").resize((640, 680))
+    draw = ImageDraw.Draw(img)
+    draw.rectangle([0, 0, 640, 160], fill=(0, 0, 0))
+    draw.text((10, 8),  f"Dataset: {dataset_name}", fill=(255, 255, 255))
+    img_id_display = img_id[:50] + '...' if len(img_id) > 50 else img_id
+    draw.text((10, 35), f"Image ID: {img_id_display}", fill=(255, 255, 255))
+    pred_color = (0, 255, 0) if pred_label == true_label else (255, 0, 0)
+    draw.text((10, 62), f"Predicted:    {pred_label}", fill=pred_color)
+    draw.text((10, 89), f"Ground Truth: {true_label}", fill=(255, 255, 0))
+    result_text  = "CORRECT" if pred_label == true_label else "INCORRECT"
+    result_color = (0, 255, 0) if pred_label == true_label else (255, 0, 0)
+    draw.rectangle([0, 640, 640, 680], fill=(0, 0, 0))
+    draw.text((10, 648), result_text, fill=result_color)
+    return img
 
-    # Visualization
-    axes[i].imshow(image)
-    axes[i].set_title(f"Pred: Level {pred.item()}\nConf: {conf.item()*100:.2f}%", 
-                      fontsize=14, color='green' if conf.item() > 0.9 else 'orange')
-    axes[i].axis('off')
+# Process each dataset
+all_saved = []
+sample_counter = 1
 
-plt.tight_layout()
-plt.savefig('inference_results.png', dpi=300, bbox_inches='tight')
-plt.show()
+for dataset_name, count in samples_per_dataset.items():
+    dataset_path = os.path.join(SOURCE_DIR, dataset_name)
+    if not os.path.exists(dataset_path):
+        print(f"Skipping {dataset_name} — folder not found")
+        continue
 
-print("✅ Inference visualization saved as inference_results.png")
+    img_dir = os.path.join(dataset_path, 'test', 'images')
+    lbl_dir = os.path.join(dataset_path, 'test', 'labels')
+    if not os.path.exists(img_dir):
+        img_dir = os.path.join(dataset_path, 'valid', 'images')
+        lbl_dir = os.path.join(dataset_path, 'valid', 'labels')
+    if not os.path.exists(img_dir):
+        print(f"No images found for {dataset_name}")
+        continue
 
-# --- PART C: 7-LOCKED IMAGES FOR MAPPING CODE ---
-import os
-from PIL import Image
+    yaml_path = os.path.join(dataset_path, 'data.yaml')
+    with open(yaml_path, 'r') as f:
+        class_names = yaml.safe_load(f)['names']
 
-search_dirs = ['/kaggle/working/', '/kaggle/input/']
+    all_imgs = [f for f in os.listdir(img_dir)
+                if f.endswith(('.jpg', '.jpeg', '.png'))]
+    selected = random.sample(all_imgs, min(count, len(all_imgs)))
 
-targets = [
-    "10_png.rf.f11efd", "52_png.rf.7c8a97", "14_png.rf.997b89", 
-    "4_png.rf.b4d94b", "67_png.rf.aca21d", "59_png.rf.d75e67", "10_png.rf.b790e7"
-]
-print(f"{'SAMPLE':<12} | {'DATASET VERSION':<20} | {'ORIGINAL FILENAME'}")
-print("-" * 80)
+    for img_file in selected:
+        img_path = os.path.join(img_dir, img_file)
+        lbl_path = os.path.join(lbl_dir, img_file.rsplit('.', 1)[0] + '.txt')
 
-for i, target_id in enumerate(targets):
-    found = False
-    dest_name = f"soil_sample_{i+1}.jpg"
-    
-    for start_dir in search_dirs:
-        if found: break
-        for root, dirs, files in os.walk(start_dir):
-            if found: break
-            for filename in files:
-                if filename.startswith(target_id):
-                    # Extract the version name from the path (e.g., v4-ir)
-                    path_parts = root.split('/')
-                    version = path_parts[-3] if len(path_parts) > 3 else "root"
-                    
-                    source = os.path.join(root, filename)
-                    img = Image.open(source).convert('RGB')
-                    img.save(f'/kaggle/working/{dest_name}')
-                    
-                    print(f"{dest_name:<12} | {version:<20} | {filename}")
-                    found = True
-                    break
-            
-    if not found:
-        print(f"soil_sample_{i+1:<5} | {'NOT FOUND':<20} | {target_id}")
+        true_label = 'Unknown'
+        if os.path.exists(lbl_path):
+            with open(lbl_path, 'r') as f:
+                lines = f.readlines()
+            if lines:
+                class_id  = int(lines[0].split()[0])
+                raw_name  = str(class_names[class_id])
+                true_label = mapping.get(raw_name, raw_name)
 
-print("-" * 80)
+        # Run inference
+        img    = Image.open(img_path).convert("RGB")
+        inputs = processor(images=img, return_tensors="pt")
+        inputs = {k: v.to(device) for k, v in inputs.items()}  # ← FIX
+
+        with torch.no_grad():
+            outputs = model(**inputs)
+
+        pred_id    = outputs.logits.argmax(-1).item()
+        pred_label = f"Level {pred_id}"
+
+        img_id   = img_file.rsplit('.', 1)[0]
+        annotated = annotate_image(img, dataset_name, img_id, pred_label, true_label)
+        save_name = f"sample_{sample_counter:02d}_{dataset_name}.jpg"
+        save_path = os.path.join(OUTPUT_DIR, save_name)
+        annotated.save(save_path)
+        all_saved.append(save_path)
+        print(f"Sample {sample_counter:02d} | {dataset_name} | {img_id} | "
+              f"Pred: {pred_label} | Truth: {true_label}")
+        sample_counter += 1
+
+# Zip all images
+with zipfile.ZipFile(ZIP_PATH, 'w') as zipf:
+    for file_path in all_saved:
+        zipf.write(file_path, os.path.basename(file_path))
+
+print(f"\n{len(all_saved)} images saved and zipped!")
+print(f"ZIP location: {ZIP_PATH}")
+
+from IPython.display import FileLink
+display(FileLink(ZIP_PATH))
+
 print("All files saved to /kaggle/working/ sidebar.")
