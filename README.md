@@ -277,13 +277,6 @@ Phase 5 was validated on 48 unseen images sampled across all 7 datasets, achievi
 ---
 
 ## Technical Specification 
-| Parameter | Specification |
-| :--- | :--- |
-| **Model Architecture** | Vision Transformer (ViT-Base) |
-| **Hardware** | Dual NVIDIA T4 GPUs |
-| **Optimizer** | AdamW ($5 \times 10^{-5}$ LR) |
-
-### Updated Technical Specifications
 
 | Parameter | ViT Phases | Phase 5 (YOLOv8) |
 |---|---|---|
