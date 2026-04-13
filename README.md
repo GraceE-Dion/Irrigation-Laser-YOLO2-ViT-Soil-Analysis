@@ -1,4 +1,4 @@
-# Irrigation-Laser-YOLO2-ViT-Soil-Analysis
+# Irrigation-Laser Multi-Spectral Soil Moisture Classification via Vision Transformer and YOLOv8 Object Detection
 
 ## **Project Summary**
 
@@ -215,6 +215,63 @@ To validate the model's reliability, we performed an inference test on unseen sa
 This discrepancy suggests a probable labeling error in the source dataset rather than a model failure. It is notable that the ViT classifier, trained on multi-spectral image data across IR, UV, and RGB modalities, produced a prediction more consistent with the observable visual evidence than the assigned ground truth label. This outcome demonstrates that the model learned meaningful moisture-to-visual feature relationships with sufficient fidelity to surface questionable annotations in the training corpus.
 This finding highlights a known challenge in laser-based soil moisture classification datasets: UV laser intensity and spatial diffusion patterns can be ambiguous under certain lighting and soil composition conditions, increasing the risk of labeling inconsistencies during manual annotation. Researchers and practitioners applying or extending this model should be aware that a subset of labels in the underlying datasets may not fully reflect actual moisture conditions, particularly in the soil_moisture_stir_september and soil_moisture_september collections where stir-based soil disturbance may have altered surface appearance at the time of capture.
 
+**Development Phases: From Baseline to Object Detection**
+
+Following the initial baseline model, the research progressed through five systematic improvement phases, each building on findings from the previous stage.
+
+**Phase 1: Overfitting Correction**
+The baseline model exhibited overfitting — training loss diverged from validation loss at epoch 9 and validation accuracy plateaued at 97%, indicating inflated performance. Phase 1 introduced dropout regularization (0.1), reduced learning rate (2e-5), weight decay (0.01), cosine learning rate scheduling, and early stopping with patience of 3 epochs. The model trained for 17 epochs before early stopping triggered, achieving an honest baseline of 96.5% validation accuracy with significantly reduced overfitting.
+
+**Phase 2: Data Augmentation on Whole Images**
+Phase 2 applied on-the-fly augmentation to the training pipeline including random flipping, color jitter, random resized crop, and Gaussian blur, applied exclusively to training data. The model trained for 25 epochs and achieved 94.58% validation accuracy. While augmentation stabilized training further, overall accuracy did not improve beyond Phase 1, confirming that augmenting whole images containing irrelevant background content had limited impact on the laser-specific classification signal.
+
+**Phase 3: Laser Region Isolation**
+Following instructor guidance, Phase 3 introduced a two-stage pipeline using bounding box coordinates from the original YOLOv5 dataset labels to crop the UV laser region from each image before classification, with 5% padding to preserve edge diffusion patterns. The ViT was retrained on cropped laser regions only for 40 epochs, achieving 87.68% validation accuracy. The loss curves showed the cleanest convergence of all ViT phases. However, mid-range moisture levels (3, 4, 6) showed increased confusion due to inconsistent crop sizes across datasets, with laser spots ranging from 6% to 88% of image area causing significant upscaling inconsistency.
+
+**Phase 4A: Physical Noise Augmentation on Laser Crops**
+Phase 4A physically generated augmented training images by saving Gaussian noise and salt-and-pepper noise copies of each training image to disk, effectively tripling the training set from 717 to 2,151 images. This approach directly followed instructor guidance to add noise to images and train on the combined original and augmented data together. The model trained for 40 epochs achieving 89.66% validation accuracy, with Level 10 improving to perfect 1.00 F1 score.
+
+**Phase 4B: Class-Weighted Loss Function**
+Phase 4B added inverse frequency class weighting to the loss function, specifically targeting the weakest performing classes. A custom WeightedTrainer was implemented using PyTorch CrossEntropyLoss with per-class weights computed from training sample counts. Training for 40 epochs on the augmented dataset achieved 90.64% validation accuracy — the best ViT result across all phases.
+
+**Phase 5: YOLOv8 Object Detection (Final Architecture)**
+To frame the problem as an object detection task, Phase 5 trained a YOLOv8s model treating each moisture level (0-10) as a distinct object class. YOLOv8 detects the UV laser spot and predicts the moisture level simultaneously in a single forward pass, eliminating the two-stage pipeline entirely. The model trained for 46 epochs before early stopping triggered, achieving 95.5% mAP50 across all 11 classes — a significant improvement over all ViT phases.
+
+---
+
+### Complete Phase Comparison
+
+| Phase | Approach | Best Accuracy/mAP50 |
+|---|---|---|
+| Original | Whole image ViT, no regularization | 97% (overfit) |
+| Phase 1 | Whole image ViT, regularized | 96.5% |
+| Phase 2 | Whole image ViT, augmented | 94.58% |
+| Phase 3 | Laser crop ViT, 40 epochs | 87.68% |
+| Phase 4A | Laser crop + noise augmentation | 89.66% |
+| Phase 4B | Laser crop + noise aug + weighted loss | 90.64% |
+| **Phase 5** | **YOLOv8 object detection** | **95.5% mAP50** |
+
+---
+
+### Cross-Dataset Inference Results (Phase 5)
+
+Phase 5 was validated on 48 unseen images sampled across all 7 datasets, achieving 39/48 correct predictions (81.25% inference accuracy).
+
+| Dataset | Samples | Mismatches | Notes |
+|---|---|---|---|
+| soil-moisture-v4 | 8 | 0 | Perfect ✓ |
+| soil-moisture-v4-ir | 7 | 0 | Perfect ✓ |
+| soil-moisture-v4-uv | 7 | 0 | Perfect ✓ |
+| soil-moisture-ir | 7 | 1 | IR spectral difference |
+| soil-moisture-5sagf | 7 | 0 | Perfect ✓ |
+| soil_moisture_september | 7 | 6 | Annotation limitation — full image bounding boxes |
+| soil_moisture_stir_september | 7 | 2 | Stirred soil texture variation |
+| **Total** | **48** | **9** | **81.25% inference accuracy** |
+
+> **Key Finding:** The `soil_moisture_september` dataset accounts for 67% of all inference errors due to bounding box annotations covering the full image area (width=height=1.0), providing no meaningful laser localization. Excluding this dataset, Phase 5 achieves **33/41 = 92.7% inference accuracy** across the remaining six datasets.
+
+---
+
 **Inference Validation**: o confirm real-world viability, the model was tested against unseen samples from all 7 merged datasets, achieving strong classification performance across RGB, IR, and UV spectral modalities. The ViT architecture's self-attention mechanism showed capacity to generalize across diverse soil surface conditions, including stirred and undisturbed scenarios, though edge cases at extreme moisture levels revealed sensitivity to labeling inconsistencies in the source data.
 
 ---
@@ -226,13 +283,25 @@ This finding highlights a known challenge in laser-based soil moisture classific
 | **Hardware** | Dual NVIDIA T4 GPUs |
 | **Optimizer** | AdamW ($5 \times 10^{-5}$ LR) |
 
+### Updated Technical Specifications
+
+| Parameter | ViT Phases | Phase 5 (YOLOv8) |
+|---|---|---|
+| Architecture | ViT-Base-patch16-224 | YOLOv8s |
+| Hardware | Dual NVIDIA T4 GPUs | Dual NVIDIA T4 GPUs |
+| Optimizer | AdamW (2e-5 LR) | Adam (0.001 LR) |
+| Regularization | Dropout 0.1, weight decay 0.01 | Weight decay 0.0005 |
+| Label Smoothing | 0.1 | 0.1 |
+| Training Images | 717 (Phase 1-3) / 2,151 (Phase 4A-4B) | 717 |
+| Image Size | 224×224 | 640×640 |
+| Max Epochs | 40 | 50 (early stop at 46) |
+| Best Result | 90.64% accuracy (Phase 4B) | 95.5% mAP50 (Phase 5) |
+
 The model architecture utilizes a pre-trained ViT-Base backbone. During initialization, the original ImageNet classifier head was replaced with a custom linear layer specialized for 11 soil moisture levels (0–10). This was confirmed by the weight initialization report, ensuring the transformer blocks were fine-tuned specifically to identify spectral diffraction patterns rather than general objects.
 
 ---
 
 ## 🏁 Conclusion
 
-This project successfully demonstrates that a **Vision Transformer (ViT)** architecture is highly effective at interpreting the complex spectral patterns created by laser-soil interaction. By achieving a final **Validation Accuracy of 98.11%**, the model proves it can reliably distinguish between 11 different soil moisture levels (0–10). 
-
-The integration of multi-spectral data (IR, UV, and RGB) allows for a robust classification system that could significantly improve automated irrigation efficiency and water conservation in precision agriculture.
+This project successfully demonstrates that a **Vision Transformer (ViT) architecture** is effective at interpreting complex spectral patterns created by laser-soil interaction. Through five systematic development phases, the research progressed from a baseline whole-image classifier to a **YOLOv8** object detection architecture that simultaneously detects UV laser spots and predicts moisture levels in a single forward pass. The final Phase 5 model achieves 95.5% mAP50 across all 11 moisture classes, confirming that framing UV laser soil moisture classification as an object detection task is the architecturally correct approach. The integration of multi-spectral data (IR, UV, and RGB) allows for a robust classification system that could significantly improve automated irrigation efficiency and water conservation in precision agriculture. Future work will focus on re-annotating the soil_moisture_september dataset with precise laser region coordinates and extending the pipeline to real-time field deployment.
 
