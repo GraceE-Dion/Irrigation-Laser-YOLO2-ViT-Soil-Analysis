@@ -41,9 +41,16 @@ Irrigation-Laser-Yolo2/
 
 ---
 
-🚀 Production & Documentation
+### 🚀 Production and Documentation
 
-1. master_training_script.py The full, end-to-end pipeline. Run this file to replicate the entire project in one click.
+**`master_training_script.py`**
+The full end-to-end pipeline. Run this file to replicate the entire 
+five-phase development from data download to final YOLOv8 inference 
+in one execution.
 
-2. README.md The main project report, performance summary, and visual proof.
+**`requirements.txt`**
+Install all dependencies with:
 
+**`README.md`**
+The main project report covering all five development phases, 
+performance metrics, convergence analysis, and visual evidence.
