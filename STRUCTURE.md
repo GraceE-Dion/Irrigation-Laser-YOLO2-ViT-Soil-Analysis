@@ -25,6 +25,7 @@ phases, from baseline ViT training through to YOLOv8 object detection.
 
 
 🌳 Repository Tree
+```text
 Irrigation-Laser-YOLO2-ViT-Soil-Analysis/
 ├── 📁 images/                              # README metrics and graphs
 ├── 📁 data/
