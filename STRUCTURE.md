@@ -25,19 +25,30 @@ phases, from baseline ViT training through to YOLOv8 object detection.
 
 
 🌳 Repository Tree
-```text
-Irrigation-Laser-Yolo2/
-├── data/training-data/downloaded/  # All 7 Roboflow datasets
-├── runs/train/merged/              # Results from multi-spectrum merge
-├── runs/fine-tuned/                # Final ViT training outputs
-├── 01_setup_environment.py         # GPU config & library install
-├── 02_data_acquisition.py          # Automated API retrieval
-├── 03_automated_merge.py           # Multi-spectrum data fusion
-├── 04_preprocessing.py             # ViT image normalization
-├── 05_vit_finetuning.py            # Vision Transformer training
-├── 06_final_evaluation.py          # Confusion Matrix generation
-├── master_training_script.py       # Full end-to-end pipeline
-└── README.md                       # Main project report
+Irrigation-Laser-YOLO2-ViT-Soil-Analysis/
+├── 📁 images/                              # README metrics and graphs
+├── 📁 data/
+│   ├── training-data/downloaded/           # All 7 Roboflow datasets
+│   └── Master_Laser_Crops/                 # Cropped laser region dataset
+├── 📁 runs/
+│   ├── train/merged/                       # Results from multi-spectrum merge
+│   ├── fine-tuned/                         # ViT training outputs (all phases)
+│   └── yolo_results/                       # YOLOv8 training outputs and metrics
+├── 01_setup_environment.py                 # GPU config and library install
+├── 02_data_acquisition.py                  # Automated Roboflow API retrieval
+├── 03_automated_merge.py                   # Multi-spectrum data fusion
+├── 04_preprocessing.py                     # ViT image normalization
+├── 05_baseline_training.py                 # Original ViT baseline (overfit)
+├── 06_phase1_overfitting_fix.py            # Regularization and early stopping
+├── 07_phase2_augmentation.py               # On-the-fly augmentation
+├── 08_phase3_laser_crop.py                 # Laser region isolation
+├── 09_phase4a_noise_augmentation.py        # Physical noise augmentation
+├── 10_phase4b_weighted_loss.py             # Class-weighted loss function
+├── 11_phase5_yolo_detection.py             # YOLOv8 object detection
+├── 12_inference_pipeline.py                # Final inference and annotation
+├── master_training_script.py               # Full end-to-end pipeline
+├── requirements.txt                        # All dependencies
+└── README.md                               # Main project report
 
 ---
 
