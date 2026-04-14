@@ -119,6 +119,20 @@ The model development progressed through five systematic phases, each addressing
 
 <h2 align="center">Development Phase Metrics</h2>
 
+<h3 align="center">Baseline: Original ViT Model (Overfit)</h3>
+<p align="center">
+  <img src="assets/epoch_training_baseline.jpg" width="49%" />
+  <img src="assets/classification_report_baseline.jpg" width="49%" />
+</p>
+<p align="center">
+  <img src="assets/accuracy_graph_baseline.jpg" width="49%" />
+  <img src="assets/loss_curve_baseline.jpg" width="49%" />
+</p>
+<p align="center">
+  <img src="assets/confusion_matrix_baseline.jpg" width="70%" />
+</p>
+<hr>
+
 <h3 align="center">Phase 1: Overfitting Correction</h3>
 <p align="center">
   <img src="assets/epoch_training_phase1.jpg" width="49%" />
@@ -178,26 +192,7 @@ The model development progressed through five systematic phases, each addressing
 <h3 align="center">Phase 4B: Class-Weighted Loss Function</h3>
 <p align="center">
   <img src="assets/epoch_training_phase4b.jpg" width="49%" />
-  <img src="assets/classification_report_phase4b.jpg" width="49%" />
-</p>
-<p align="center">
-  <img src="assets/accuracy_graph_phase4b.jpg" width="49%" />
-  <img src="assets/loss_curve_phase4b.jpg" width="49%" />
-</p>
-<p align="center">
-  <img src="assets/confusion_matrix_phase4b.jpg" width="70%" />
-</p>
-<hr>
-
-<h3 align="center">Phase 5: YOLOv8 Object Detection</h3>
-<p align="center">
-  <img src="assets/epoch_training_phase5.jpg" width="49%" />
-  <img src="assets/classification_report_phase5.jpg" width="49%" />
-</p>
-<p align="center">
-  <img src="assets/confusion_matrix_phase5.jpg" width="70%" />
-</p>
-<hr>
+  <img src="assets
 
 
 **Convergence Analysis:** The baseline model trained for 10 epochs, with validation 
