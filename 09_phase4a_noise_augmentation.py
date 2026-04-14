@@ -200,3 +200,96 @@ trainer_v4.train()
 trainer_v4.save_model('./results_v5/final_model')
 processor.save_pretrained('./results_v5/final_model')
 print("Phase 4A model saved!")
+
+# Step 20A: Phase 4A Metrics
+# Fix — import missing and replot confusion matrix only
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+
+class_names_full = [f"Soil Moisture Level {i}" for i in range(11)]
+plt.figure(figsize=(14, 12))
+cm_p4a = confusion_matrix(y_true_p4a, y_pred_p4a)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm_p4a,
+                               display_labels=class_names_full)
+disp.plot(cmap='Blues', xticks_rotation=45)
+plt.title('Phase 4A Confusion Matrix — Augmented Laser Crop ViT Classifier')
+plt.tight_layout()
+plt.savefig('confusion_matrix_phase4a.png', dpi=150, bbox_inches='tight')
+plt.show()
+print("Confusion matrix saved!")
+train_losses_p4a = [4.598878, 4.018516, 3.466031, 3.105857, 2.701540,
+                    2.416365, 2.183443, 1.930872, 1.865558, 1.660936,
+                    1.601121, 1.554153, 1.487123, 1.435534, 1.452652,
+                    1.371130, 1.396241, 1.277487, 1.367294, 1.145833,
+                    1.172555, 1.357800, 1.288642, 1.175231, 1.273762,
+                    1.203880, 1.224792, 1.190668, 1.156583, 1.123374,
+                    1.139964, 1.203056, 1.173595, 1.167897, 1.171117,
+                    1.172913, 1.196974, 1.106842, 1.134756, 1.133870]
+
+val_losses_p4a = [4.553881, 3.976180, 3.464017, 2.997657, 2.627634,
+                  2.384494, 2.262010, 2.055072, 1.935329, 1.903518,
+                  1.802516, 1.753705, 1.762875, 1.825698, 1.669055,
+                  1.766719, 1.687311, 1.614212, 1.633559, 1.572980,
+                  1.654490, 1.615139, 1.625992, 1.633548, 1.589483,
+                  1.614638, 1.604377, 1.591931, 1.569810, 1.570749,
+                  1.570167, 1.573008, 1.596105, 1.591208, 1.593277,
+                  1.589233, 1.593882, 1.597016, 1.597456, 1.597225]
+
+val_accuracies_p4a = [0.216749, 0.344828, 0.566502, 0.778325, 0.812808,
+                      0.812808, 0.778325, 0.842365, 0.842365, 0.822660,
+                      0.842365, 0.852217, 0.857143, 0.837438, 0.876847,
+                      0.847291, 0.871921, 0.886700, 0.876847, 0.896552,
+                      0.871921, 0.876847, 0.891626, 0.876847, 0.886700,
+                      0.876847, 0.881773, 0.891626, 0.896552, 0.891626,
+                      0.881773, 0.891626, 0.886700, 0.881773, 0.881773,
+                      0.886700, 0.886700, 0.881773, 0.886700, 0.886700]
+
+epochs_p4a = range(1, 41)
+class_names = [f"Level {i}" for i in range(11)]
+
+# Classification Report
+print("\n=== PHASE 4A CLASSIFICATION REPORT ===")
+predictions_p4a = trainer_v4.predict(laser_test_aug)
+y_pred_p4a = np.argmax(predictions_p4a.predictions, axis=1)
+y_true_p4a = predictions_p4a.label_ids
+print(classification_report(y_true_p4a, y_pred_p4a, target_names=class_names))
+
+# Accuracy Graph
+plt.figure(figsize=(10, 5))
+plt.plot(epochs_p4a, val_accuracies_p4a, label='Validation Accuracy',
+         marker='o', color='blue')
+plt.axhline(y=0.98, color='r', linestyle='--', label='Target (98%)')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.title('Phase 4A — Validation Accuracy vs Target')
+plt.ylim([0.1, 1.0])
+plt.legend()
+plt.grid(True)
+plt.savefig('accuracy_graph_phase4a.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+# Loss Curve
+plt.figure(figsize=(10, 5))
+plt.plot(epochs_p4a, train_losses_p4a, label='Training Loss',
+         marker='o', color='blue')
+plt.plot(epochs_p4a, val_losses_p4a, label='Validation Loss',
+         marker='s', color='orange')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.title('Phase 4A — Training and Validation Loss Curve')
+plt.legend()
+plt.grid(True)
+plt.savefig('loss_curve_phase4a.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+# Confusion Matrix
+class_names_full = [f"Soil Moisture Level {i}" for i in range(11)]
+plt.figure(figsize=(14, 12))
+cm_p4a = confusion_matrix(y_true_p4a, y_pred_p4a)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm_p4a,
+                               display_labels=class_names_full)
+disp.plot(cmap='Blues', xticks_rotation=45)
+plt.title('Phase 4A Confusion Matrix — Augmented Laser Crop ViT Classifier')
+plt.tight_layout()
+plt.savefig('confusion_matrix_phase4a.png', dpi=150, bbox_inches='tight')
+plt.show()
+print("Phase 4A metrics saved!")
