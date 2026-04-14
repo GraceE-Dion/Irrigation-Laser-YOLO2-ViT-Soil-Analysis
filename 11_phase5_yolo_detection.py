@@ -193,3 +193,52 @@ results = model_yolo.train(
 
 print("YOLOv8 training complete!")
 print(f"Best model saved at: {results.save_dir}")
+
+#Step 26: Phase 5 — Collect YOLO auto-generated metrics
+import os
+import shutil
+
+yolo_results = '/kaggle/working/yolo_results/soil_moisture_yolo'
+
+# List all auto-generated files
+print("Available Phase 5 metric files:")
+for root, dirs, files in os.walk(yolo_results):
+    for file in files:
+        filepath = os.path.join(root, file)
+        print(filepath)
+
+# Copy key metric files to working directory for easy download
+key_files = [
+    'confusion_matrix.png',
+    'confusion_matrix_normalized.png',
+    'results.png',
+    'PR_curve.png',
+    'F1_curve.png',
+    'val_batch0_pred.jpg',
+]
+
+print("\nCopying key files to /kaggle/working/phase5_metrics/")
+os.makedirs('/kaggle/working/phase5_metrics', exist_ok=True)
+
+for file in key_files:
+    src = os.path.join(yolo_results, file)
+    if os.path.exists(src):
+        dst = f'/kaggle/working/phase5_metrics/phase5_{file}'
+        shutil.copy(src, dst)
+        print(f"Copied: {file} → phase5_{file}")
+    else:
+        print(f"Not found: {file}")
+
+# Zip all phase5 metrics for easy download
+import zipfile
+zip_path = '/kaggle/working/phase5_metrics.zip'
+with zipfile.ZipFile(zip_path, 'w') as zipf:
+    for file in os.listdir('/kaggle/working/phase5_metrics'):
+        zipf.write(
+            os.path.join('/kaggle/working/phase5_metrics', file),
+            file
+        )
+print(f"\nAll Phase 5 metrics zipped at: {zip_path}")
+
+from IPython.display import FileLink
+display(FileLink(zip_path))
