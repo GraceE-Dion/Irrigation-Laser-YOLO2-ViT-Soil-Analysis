@@ -15,9 +15,9 @@ phases, from baseline ViT training through to YOLOv8 object detection.
 | `06_phase1_overfitting_fix.py` | Phase 1 | Regularized ViT with dropout, weight decay, early stopping — 96.5% |
 | `07_phase2_augmentation.py` | Phase 2 | On-the-fly augmentation on whole images — 94.58% |
 | `08_phase3_laser_crop.py` | Phase 3 | Laser region isolation using bounding box coordinates — 87.68% |
-| `09_phase4a_noise_augmentation.py` | Phase 4A | Physical noise augmentation tripling training set to 2,151 images — 89.66% |
+| `09_phase4a_noise_augmentation.py` | Phase 4A | Physical noise augmentation tripling training set — 89.66% |
 | `10_phase4b_weighted_loss.py` | Phase 4B | Inverse frequency class weighting targeting weak classes — 90.64% |
-| `11_phase5_yolo_detection.py` | Phase 5 | YOLOv8 single-pass laser detection and moisture classification — 95.5% mAP50 |
+| `11_phase5_yolo_detection.py` | Phase 5 | YOLOv8 single-pass laser detection and classification — 95.5% mAP50 |
 | `12_inference_pipeline.py` | Inference | Two-stage inference with annotated output images and bounding boxes |
 | `master_training_script.py` | Full Pipeline | End-to-end pipeline from data download to final inference |
 | `requirements.txt` | Setup | All dependencies for full reproduction |
@@ -27,11 +27,11 @@ phases, from baseline ViT training through to YOLOv8 object detection.
 🌳 Repository Tree
 ```text
 Irrigation-Laser-YOLO2-ViT-Soil-Analysis/
-├── 📁 images/                              # README metrics and graphs
-├── 📁 data/
+├── images/                                 # README metrics and graphs
+├── data/
 │   ├── training-data/downloaded/           # All 7 Roboflow datasets
 │   └── Master_Laser_Crops/                 # Cropped laser region dataset
-├── 📁 runs/
+├── runs/
 │   ├── train/merged/                       # Results from multi-spectrum merge
 │   ├── fine-tuned/                         # ViT training outputs (all phases)
 │   └── yolo_results/                       # YOLOv8 training outputs and metrics
