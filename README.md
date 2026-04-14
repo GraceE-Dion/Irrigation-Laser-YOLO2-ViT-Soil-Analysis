@@ -258,7 +258,7 @@ soil noise and attend specifically to the laser refraction patterns.
 where standard RGB shadows might obscure moisture levels.
 
 However, systematic analysis revealed that whole-image classification introduced 
-irrelevant background signals — soil debris, plant roots, and variable lighting — 
+irrelevant background signals — soil debris, plant roots, and variable lighting, 
 that limited generalization across datasets. This motivated the progressive shift 
 toward laser region isolation and ultimately the YOLOv8 object detection approach, 
 which detects the UV laser spot and classifies the moisture level simultaneously in 
@@ -293,7 +293,7 @@ predictions and ground truth labels for direct comparison.
 
 The inference results confirm that the YOLOv8 architecture generalizes effectively 
 across RGB, IR, and UV spectral modalities. Of the 9 mismatches observed across 
-48 inference images, 6 originated from the soil_moisture_september dataset — a 
+48 inference images, 6 originated from the soil_moisture_september dataset, a 
 dataset with known annotation limitations where bounding boxes cover the full image 
 area, providing no meaningful laser localization for the detection model. Excluding 
 this dataset, Phase 5 achieves 92.7% inference accuracy across the remaining six 
@@ -428,7 +428,7 @@ This finding highlights a known challenge in laser-based soil moisture classific
 Following the initial baseline model, the research progressed through five systematic improvement phases, each building on findings from the previous stage.
 
 **Phase 1: Overfitting Correction**
-The baseline model exhibited overfitting — training loss diverged from validation loss at epoch 9 and validation accuracy plateaued at 97%, indicating inflated performance. Phase 1 introduced dropout regularization (0.1), reduced learning rate (2e-5), weight decay (0.01), cosine learning rate scheduling, and early stopping with patience of 3 epochs. The model trained for 17 epochs before early stopping triggered, achieving an honest baseline of 96.5% validation accuracy with significantly reduced overfitting.
+The baseline model exhibited overfitting, training loss diverged from validation loss at epoch 9 and validation accuracy plateaued at 97%, indicating inflated performance. Phase 1 introduced dropout regularization (0.1), reduced learning rate (2e-5), weight decay (0.01), cosine learning rate scheduling, and early stopping with patience of 3 epochs. The model trained for 17 epochs before early stopping triggered, achieving an honest baseline of 96.5% validation accuracy with significantly reduced overfitting.
 
 **Phase 2: Data Augmentation on Whole Images**
 Phase 2 applied on-the-fly augmentation to the training pipeline including random flipping, color jitter, random resized crop, and Gaussian blur, applied exclusively to training data. The model trained for 25 epochs and achieved 94.58% validation accuracy. While augmentation stabilized training further, overall accuracy did not improve beyond Phase 1, confirming that augmenting whole images containing irrelevant background content had limited impact on the laser-specific classification signal.
@@ -440,10 +440,10 @@ Following instructor guidance, Phase 3 introduced a two-stage pipeline using bou
 Phase 4A physically generated augmented training images by saving Gaussian noise and salt-and-pepper noise copies of each training image to disk, effectively tripling the training set from 717 to 2,151 images. This approach directly followed instructor guidance to add noise to images and train on the combined original and augmented data together. The model trained for 40 epochs achieving 89.66% validation accuracy, with Level 10 improving to perfect 1.00 F1 score.
 
 **Phase 4B: Class-Weighted Loss Function**
-Phase 4B added inverse frequency class weighting to the loss function, specifically targeting the weakest performing classes. A custom WeightedTrainer was implemented using PyTorch CrossEntropyLoss with per-class weights computed from training sample counts. Training for 40 epochs on the augmented dataset achieved 90.64% validation accuracy — the best ViT result across all phases.
+Phase 4B added inverse frequency class weighting to the loss function, specifically targeting the weakest performing classes. A custom WeightedTrainer was implemented using PyTorch CrossEntropyLoss with per-class weights computed from training sample counts. Training for 40 epochs on the augmented dataset achieved 90.64% validation accuracy, the best ViT result across all phases.
 
 **Phase 5: YOLOv8 Object Detection (Final Architecture)**
-To frame the problem as an object detection task, Phase 5 trained a YOLOv8s model treating each moisture level (0-10) as a distinct object class. YOLOv8 detects the UV laser spot and predicts the moisture level simultaneously in a single forward pass, eliminating the two-stage pipeline entirely. The model trained for 46 epochs before early stopping triggered, achieving 95.5% mAP50 across all 11 classes — a significant improvement over all ViT phases.
+To frame the problem as an object detection task, Phase 5 trained a YOLOv8s model treating each moisture level (0-10) as a distinct object class. YOLOv8 detects the UV laser spot and predicts the moisture level simultaneously in a single forward pass, eliminating the two-stage pipeline entirely. The model trained for 46 epochs before early stopping triggered, achieving 95.5% mAP50 across all 11 classes, a significant improvement over all ViT phases.
 
 ---
 
