@@ -1,4 +1,4 @@
-# STEP 2: Multi-Source Data Acquisition
+# STAGE 2: Multi-Source Data Acquisition
 rf = Roboflow(api_key="yRqyBbimhh1vgoeZs2Gx")
 
 projects = [
