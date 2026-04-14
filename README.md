@@ -205,11 +205,14 @@ The model development progressed through five systematic phases, each addressing
 
 <h3 align="center">Phase 5: YOLOv8 Object Detection</h3>
 <p align="center">
-  <img src="images/epoch_training_phase5.jpg" width="49%" />
-  <img src="images/classification_report_phase5.jpg" width="49%" />
+  <img src="images/training_curves_phase5.png" width="99%" />
 </p>
 <p align="center">
-  <img src="images/confusion_matrix_phase5.jpg" width="70%" />
+  <img src="images/confusion_matrix_phase5.png" width="49%" />
+  <img src="images/confusion_matrix_phase5_normalized.png" width="49%" />
+</p>
+<p align="center">
+  <img src="images/phase5_validation_batch_pred.jpg" width="70%" />
 </p>
 <hr>
 
