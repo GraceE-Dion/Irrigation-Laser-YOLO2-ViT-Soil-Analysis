@@ -1,5 +1,4 @@
 # STAGE 5: Vision Transformer Fine-Tuning
-# 05_baseline_training.py
 # Original ViT Baseline Training — 10 epochs (overfit)
 
 import evaluate
