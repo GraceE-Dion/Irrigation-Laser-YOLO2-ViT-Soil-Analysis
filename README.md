@@ -121,78 +121,97 @@ The model development progressed through five systematic phases, each addressing
 
 <h3 align="center">Baseline: Original ViT Model (Overfit)</h3>
 <p align="center">
-  <img src="assets/epoch_training_baseline.jpg" width="49%" />
-  <img src="assets/classification_report_baseline.jpg" width="49%" />
+  <img src="images/epoch_training_baseline.jpg" width="49%" />
+  <img src="images/classification_report_baseline.jpg" width="49%" />
 </p>
 <p align="center">
-  <img src="assets/accuracy_graph_baseline.jpg" width="49%" />
-  <img src="assets/loss_curve_baseline.jpg" width="49%" />
+  <img src="images/accuracy_graph_baseline.jpg" width="49%" />
+  <img src="images/loss_curve_baseline.jpg" width="49%" />
 </p>
 <p align="center">
-  <img src="assets/confusion_matrix_baseline.jpg" width="70%" />
+  <img src="images/confusion_matrix_baseline.jpg" width="70%" />
 </p>
 <hr>
 
 <h3 align="center">Phase 1: Overfitting Correction</h3>
 <p align="center">
-  <img src="assets/epoch_training_phase1.jpg" width="49%" />
-  <img src="assets/classification_report_phase1.jpg" width="49%" />
+  <img src="images/epoch_training_phase1.jpg" width="49%" />
+  <img src="images/classification_report_phase1.jpg" width="49%" />
 </p>
 <p align="center">
-  <img src="assets/accuracy_graph_phase1.jpg" width="49%" />
-  <img src="assets/loss_curve_phase1.jpg" width="49%" />
+  <img src="images/accuracy_graph_phase1.jpg" width="49%" />
+  <img src="images/loss_curve_phase1.jpg" width="49%" />
 </p>
 <p align="center">
-  <img src="assets/confusion_matrix_phase1.jpg" width="70%" />
+  <img src="images/confusion_matrix_phase1.jpg" width="70%" />
 </p>
 <hr>
 
 <h3 align="center">Phase 2: Data Augmentation on Whole Images</h3>
 <p align="center">
-  <img src="assets/epoch_training_phase2.jpg" width="49%" />
-  <img src="assets/classification_report_phase2.jpg" width="49%" />
+  <img src="images/epoch_training_phase2.jpg" width="49%" />
+  <img src="images/classification_report_phase2.jpg" width="49%" />
 </p>
 <p align="center">
-  <img src="assets/accuracy_graph_phase2.jpg" width="49%" />
-  <img src="assets/loss_curve_phase2.jpg" width="49%" />
+  <img src="images/accuracy_graph_phase2.jpg" width="49%" />
+  <img src="images/loss_curve_phase2.jpg" width="49%" />
 </p>
 <p align="center">
-  <img src="assets/confusion_matrix_phase2.jpg" width="70%" />
+  <img src="images/confusion_matrix_phase2.jpg" width="70%" />
 </p>
 <hr>
 
 <h3 align="center">Phase 3: Laser Region Isolation</h3>
 <p align="center">
-  <img src="assets/epoch_training_phase3.jpg" width="49%" />
-  <img src="assets/classification_report_phase3.jpg" width="49%" />
+  <img src="images/epoch_training_phase3.jpg" width="49%" />
+  <img src="images/classification_report_phase3.jpg" width="49%" />
 </p>
 <p align="center">
-  <img src="assets/accuracy_graph_phase3.jpg" width="49%" />
-  <img src="assets/loss_curve_phase3.jpg" width="49%" />
+  <img src="images/accuracy_graph_phase3.jpg" width="49%" />
+  <img src="images/loss_curve_phase3.jpg" width="49%" />
 </p>
 <p align="center">
-  <img src="assets/confusion_matrix_phase3.jpg" width="70%" />
+  <img src="images/confusion_matrix_phase3.jpg" width="70%" />
 </p>
 <hr>
 
 <h3 align="center">Phase 4A: Physical Noise Augmentation</h3>
 <p align="center">
-  <img src="assets/epoch_training_phase4a.jpg" width="49%" />
-  <img src="assets/classification_report_phase4a.jpg" width="49%" />
+  <img src="images/epoch_training_phase4a.jpg" width="49%" />
+  <img src="images/classification_report_phase4a.jpg" width="49%" />
 </p>
 <p align="center">
-  <img src="assets/accuracy_graph_phase4a.jpg" width="49%" />
-  <img src="assets/loss_curve_phase4a.jpg" width="49%" />
+  <img src="images/accuracy_graph_phase4a.jpg" width="49%" />
+  <img src="images/loss_curve_phase4a.jpg" width="49%" />
 </p>
 <p align="center">
-  <img src="assets/confusion_matrix_phase4a.jpg" width="70%" />
+  <img src="images/confusion_matrix_phase4a.jpg" width="70%" />
 </p>
 <hr>
 
 <h3 align="center">Phase 4B: Class-Weighted Loss Function</h3>
 <p align="center">
-  <img src="assets/epoch_training_phase4b.jpg" width="49%" />
-  <img src="assets
+  <img src="images/epoch_training_phase4b.jpg" width="49%" />
+  <img src="images/classification_report_phase4b.jpg" width="49%" />
+</p>
+<p align="center">
+  <img src="images/accuracy_graph_phase4b.jpg" width="49%" />
+  <img src="images/loss_curve_phase4b.jpg" width="49%" />
+</p>
+<p align="center">
+  <img src="images/confusion_matrix_phase4b.jpg" width="70%" />
+</p>
+<hr>
+
+<h3 align="center">Phase 5: YOLOv8 Object Detection</h3>
+<p align="center">
+  <img src="images/epoch_training_phase5.jpg" width="49%" />
+  <img src="images/classification_report_phase5.jpg" width="49%" />
+</p>
+<p align="center">
+  <img src="images/confusion_matrix_phase5.jpg" width="70%" />
+</p>
+<hr>
 
 
 **Convergence Analysis:** The baseline model trained for 10 epochs, with validation 
