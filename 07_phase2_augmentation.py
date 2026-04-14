@@ -1,7 +1,9 @@
-# Step 8 REVISED — Fixed Augmentation
+#STAGE 7
 #the training arguments was changed to address the overfitting of the model by 
 #retraining the existing whole-image ViT with the regularization fixes, 
 #so you have a clean baseline accuracy improvement to compare against
+
+# Step 8 REVISED — Fixed Augmentation
 
 from PIL import Image as PILImage
 from torchvision import transforms
