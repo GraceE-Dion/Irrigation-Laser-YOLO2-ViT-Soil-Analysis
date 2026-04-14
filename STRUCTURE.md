@@ -50,6 +50,7 @@ Irrigation-Laser-YOLO2-ViT-Soil-Analysis/
 ├── master_training_script.py               # Full end-to-end pipeline
 ├── requirements.txt                        # All dependencies
 └── README.md                               # Main project report
+```
 
 ---
 
