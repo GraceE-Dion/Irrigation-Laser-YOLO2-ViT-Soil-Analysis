@@ -1,4 +1,4 @@
-# STAGE 1: Environment Setup
+# STEP 1: Environment Setup
 # Installs necessary AI libraries for Vision Transformers and Data Handling
 !pip install -q evaluate roboflow datasets transformers[torch]
 
