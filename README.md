@@ -523,18 +523,18 @@ To frame the problem as an object detection task, Phase 5 trained a YOLOv8s mode
 
 ## Technical Specification 
 
-| Parameter | ViT Phases | Phase 5 (YOLOv8) |Phase 6 (YOLOv8 corrected) |
-|---|---|---|
-| Architecture | ViT-Base-patch16-224 | YOLOv8s |
-| Hardware | Dual NVIDIA T4 GPUs | Dual NVIDIA T4 GPUs |
-| Optimizer | AdamW (2e-5 LR) | Adam (0.001 LR) |
-| Regularization | Dropout 0.1, weight decay 0.01 | Weight decay 0.0005 |
-| Label Smoothing | 0.1 | 0.1 |
+| Parameter | ViT Phases | Phase 5 (YOLOv8) | Phase 6 (YOLOv8 corrected) |
+|---|---|---|---|
+| Architecture | ViT-Base-patch16-224 | YOLOv8s | YOLOv8s |
+| Hardware | Dual NVIDIA T4 GPUs | Dual NVIDIA T4 GPUs | NVIDIA T4 GPU |
+| Optimizer | AdamW (2e-5 LR) | Adam (0.001 LR) | Adam (0.001 LR) |
+| Regularization | Dropout 0.1, weight decay 0.01 | Weight decay 0.0005 | Weight decay 0.0005 |
+| Label Smoothing | 0.1 | 0.1 | 0.1 |
 | Training Images | 717 (Phase 1-3) / 2,151 (Phase 4A-4B) | 717 | 1,026 |
-| Image Size | 224×224 | 640×640 |
-| Max Epochs | 40 | 50 (early stop at 46) |50 (early stop at 42) |
+| Image Size | 224×224 | 640×640 | 640×640 |
+| Max Epochs | 40 | 50 (early stop at 46) | 50 (early stop at 42) |
 | Best Result | 90.64% accuracy (Phase 4B) | 95.5% mAP50 | 95.3% mAP50 |
-| Governance Framework | NIST AI RMF 1.0, EO 14110 alignment | NIST AI RMF 1.0, EO 14110 alignment |
+| Governance Framework | NIST AI RMF 1.0, EO 14110 | NIST AI RMF 1.0, EO 14110 | NIST AI RMF 1.0, EO 14110 |
 
 The model architecture utilizes a pre-trained ViT-Base backbone. During initialization, the original ImageNet classifier head was replaced with a custom linear layer specialized for 11 soil moisture levels (0–10). This was confirmed by the weight initialization report, ensuring the transformer blocks were fine-tuned specifically to identify spectral diffraction patterns rather than general objects.
 
