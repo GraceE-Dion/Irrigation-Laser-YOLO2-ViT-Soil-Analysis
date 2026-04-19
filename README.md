@@ -332,6 +332,10 @@ that framing the task as object detection is the architecturally correct approac
 - **Extreme Error Elimination:** No extreme errors (confusing Level 0 with Level 10) 
 were observed in Phase 5, making the final model viable for real-world automated 
 irrigation applications.
+- **Dataset Integrity Fix:** Phase 6 resolved a critical class index misalignment in
+the september datasets, correctly incorporating 124 previously excluded images and
+increasing the training set to 1,026 images. Overall inference accuracy improved
+from 81.25% to 89.1%.
 
 ---
 
@@ -517,7 +521,7 @@ To frame the problem as an object detection task, Phase 5 trained a YOLOv8s mode
 
 ---
 
-**Inference Validation**: o confirm real-world viability, the model was tested against unseen samples from all 7 merged datasets, achieving strong classification performance across RGB, IR, and UV spectral modalities. The ViT architecture's self-attention mechanism showed capacity to generalize across diverse soil surface conditions, including stirred and undisturbed scenarios, though edge cases at extreme moisture levels revealed sensitivity to labeling inconsistencies in the source data.
+**Inference Validation**: To confirm real-world viability, the model was tested against unseen samples from all 7 merged datasets, achieving strong classification performance across RGB, IR, and UV spectral modalities. The ViT architecture's self-attention mechanism showed capacity to generalize across diverse soil surface conditions, including stirred and undisturbed scenarios, though edge cases at extreme moisture levels revealed sensitivity to labeling inconsistencies in the source data.
 
 ---
 
