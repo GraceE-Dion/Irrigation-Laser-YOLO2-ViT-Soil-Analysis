@@ -4,6 +4,7 @@
 
 This project represents a shift from manual, error-prone data handling to a Fully Automated Unified Fine-Tuning Pipeline. By transitioning from standard Convolutional Neural Networks (CNNs) to a Vision Transformer (ViT) architecture, this system classifies soil moisture levels (0 - 10) with 98% accuracy.
 The core innovation lies in the automated synchronization of 7 disparate datasets, including Infrared (IR), Ultraviolet (UV), and Standard Spectrum, to create a robust model that identifies soil moisture signatures invisible to the human eye.
+
 Beyond model performance, this project integrates AI governance principles into every phase of development, including structured validation frameworks, dataset integrity controls, bias identification and mitigation, deployment risk assessment, and explainability mechanisms. The work is designed to support the development of trustworthy, auditable AI systems aligned with responsible AI frameworks, including NIST's AI Risk Management Framework (AI RMF 1.0) and Executive Order 14110 on the Safe, Secure, and Trustworthy Development and Use of Artificial Intelligence.
 
 ### **The Logic**
