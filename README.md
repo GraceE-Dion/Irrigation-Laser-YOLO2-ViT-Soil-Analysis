@@ -68,7 +68,8 @@ The model development progressed through five systematic phases, each addressing
 | Phase 3 | Laser crop ViT, 40 epochs | 87.68% | Architecture change |
 | Phase 4A | Laser crop + noise augmentation | 89.66% | Improving |
 | Phase 4B | Laser crop + weighted loss | 90.64% | Best ViT result |
-| **Phase 5** | **YOLOv8 object detection** | **95.5% mAP50** | **Final** |
+| Phase 5 | YOLOv8 object detection | 95.5% mAP50 | Superseded |
+| **Phase 6** | **YOLOv8 + corrected annotations + class mapping fix** | **95.3% mAP50** | **Current best** |
 
 ### Phase 1 Key Metrics
 - **Validation Accuracy:** 96.5%
@@ -102,6 +103,34 @@ The model development progressed through five systematic phases, each addressing
 - **Architecture:** YOLOv8s — detects laser spot and predicts moisture level in single forward pass
 - **Inference accuracy:** 81.25% across 48 unseen images (92.7% excluding soil_moisture_september dataset)
 
+ ### Phase 6 Key Metrics
+- **Overall mAP50:** 95.3%
+- **Precision:** 0.895
+- **Recall:** 0.937
+- **Best epoch:** 32 / 42 (EarlyStopping patience=10)
+- **Training images:** 1,026 (up from 717 in Phase 5)
+- **Inference accuracy:** 89.1% across 46 unseen images (41/46 correct)
+- **Datasets updated:** soil_moisture_september v8, soil_moisture_stir_september v4
+
+**Pipeline fixes implemented in Phase 6:**
+- Step 4: Added `Level_X` format mapping entries for Roboflow-renamed classes
+- Step 4B: HuggingFace alphabetical index correction map for correct numerical class assignment
+- Step 6: Label remapping to correct numerical class indices before ViT training
+- Step 12: Added `Level_X` mapping entries for laser crop pipeline
+- Step 23: Added `Level_X` mapping entries for YOLO dataset preparation
+- Step 27: Fixed `soil-moisture-8.2` ground truth display
+
+**Per-class mAP50 (Phase 6):**
+
+| Class | mAP50 | Class | mAP50 |
+|---|---|---|---|
+| Level_0 | 92.7% | Level_6 | 94.6% |
+| Level_1 | 89.1% | Level_7 | 93.6% |
+| Level_2 | 86.5% | Level_8 | 91.1% |
+| Level_3 | 89.4% | Level_9 | 70.2% |
+| Level_4 | 97.2% | Level_10 | 75.9% |
+| Level_5 | 95.4% | **all** | **95.3%** | 
+
 ## AI Governance and Responsible Development Principles
 This project was developed with explicit attention to AI governance principles that extend beyond model accuracy. The following governance mechanisms were integrated throughout the development lifecycle:
 - Honest performance reporting: The baseline overfitting result (98.11%) was retained in the evaluation record rather than discarded, demonstrating that negative findings have as much evidentiary value as positive ones.
@@ -110,18 +139,18 @@ This project was developed with explicit attention to AI governance principles t
 - Deployment risk assessment: Inference testing was conducted across all seven source datasets on unseen images, with dataset-specific reliability profiling enabling practitioners to make risk-informed deployment decisions rather than relying on aggregate accuracy alone.
 - Explainability: Annotated inference outputs display bounding boxes, confidence scores, ground truth labels, and correct/incorrect indicators for all 48 test images, providing full transparency of model decisions across diverse imaging conditions.
 
-### Cross-Dataset Inference Results (Phase 5)
+### Cross-Dataset Inference Results — Phase 5 vs Phase 6
 
-| Dataset | Samples | Mismatches | Notes |
+| Dataset | Phase 5 | Phase 6 | Change |
 |---|---|---|---|
-| soil-moisture-v4 | 8 | 0 | Perfect ✓ |
-| soil-moisture-v4-ir | 7 | 0 | Perfect ✓ |
-| soil-moisture-v4-uv | 7 | 0 | Perfect ✓ |
-| soil-moisture-ir | 7 | 1 | IR spectral difference |
-| soil-moisture-5sagf | 7 | 0 | Perfect ✓ |
-| soil_moisture_september | 7 | 6 | Annotation limitation |
-| soil_moisture_stir_september | 7 | 2 | Stirred soil texture variation |
-| **Total** | **48** | **9** | **81.25% inference accuracy** |
+| soil-moisture-v4 | 8/8 ✓ | 8/8 ✓ | — |
+| soil-moisture-v4-ir | 7/7 ✓ | 7/7 ✓ | — |
+| soil-moisture-v4-uv | 7/7 ✓ | 7/7 ✓ | — |
+| soil-moisture-ir | 6/7 | 7/7 ✓ | +1 improved |
+| soil-moisture-5sagf | 7/7 ✓ | 7/7 ✓ | — |
+| soil_moisture_september | 1/7 | 4/7 | +3 improved |
+| soil_moisture_stir_september | 5/7 | 1/5 | IR signature limitation |
+| **Total** | **39/48 (81.25%)** | **41/46 (89.1%)** | **+7.85% improvement** |
 
 > **Key Finding:** The `soil_moisture_september` dataset accounts for 67% of all inference errors due to bounding box annotations covering the full image area (width=height=1.0), providing no meaningful laser localization. Excluding this dataset, Phase 5 achieves **33/41 = 92.7% inference accuracy** across the remaining six datasets.
 
@@ -226,11 +255,23 @@ This project was developed with explicit attention to AI governance principles t
 </p>
 <hr>
 
+<h3 align="center">Phase 6: Corrected Annotations + Class Mapping Fix</h3>
+<p align="center">
+  <img src="images/phase6_results.png" width="99%" />
+</p>
+<p align="center">
+  <img src="images/phase6_confusion_matrix.png" width="49%" />
+  <img src="images/phase6_confusion_matrix_normalized.png" width="49%" />
+</p>
+<p align="center">
+  <img src="images/phase6_val_batch0_pred.jpg" width="70%" />
+</p>
+
 
 **Convergence Analysis:** The baseline model trained for 10 epochs, with validation 
 accuracy climbing from 85.20% at Epoch 1 to a plateau of 98.11% at Epoch 10. However, 
 subsequent analysis revealed signs of overfitting — training loss diverged from 
-validation loss at Epoch 9, indicating inflated performance. Five development phases 
+validation loss at Epoch 9, indicating inflated performance. Six development phases 
 were implemented to address this, progressively improving model reliability from a 
 regularized 96.5% honest baseline (Phase 1) through to a YOLOv8 object detection 
 architecture achieving 95.5% mAP50 (Phase 5).
@@ -256,6 +297,7 @@ The table below summarizes the key convergence metrics across all phases:
 | Phase 4A | + Noise augmentation | 21.67% | 89.66% | 40 |
 | Phase 4B | + Weighted loss | 22.16% | 90.64% | 40 |
 | **Phase 5** | **YOLOv8 detection** | — | **95.5% mAP50** | **46 (early stop)** |
+| **Phase 6** | **YOLOv8 + corrected annotations** | — | **95.3% mAP50** | **42 (early stop)** |
 
 #### Why the Architecture Evolved: From ViT to YOLOv8
 
@@ -471,25 +513,7 @@ To frame the problem as an object detection task, Phase 5 trained a YOLOv8s mode
 | Phase 4A | Laser crop + noise augmentation | 89.66% |
 | Phase 4B | Laser crop + noise aug + weighted loss | 90.64% |
 | **Phase 5** | **YOLOv8 object detection** | **95.5% mAP50** |
-
----
-
-### Cross-Dataset Inference Results (Phase 5)
-
-Phase 5 was validated on 48 unseen images sampled across all 7 datasets, achieving 39/48 correct predictions (81.25% inference accuracy).
-
-| Dataset | Samples | Mismatches | Notes |
-|---|---|---|---|
-| soil-moisture-v4 | 8 | 0 | Perfect ✓ |
-| soil-moisture-v4-ir | 7 | 0 | Perfect ✓ |
-| soil-moisture-v4-uv | 7 | 0 | Perfect ✓ |
-| soil-moisture-ir | 7 | 1 | IR spectral difference |
-| soil-moisture-5sagf | 7 | 0 | Perfect ✓ |
-| soil_moisture_september | 7 | 6 | Annotation limitation — full image bounding boxes |
-| soil_moisture_stir_september | 7 | 2 | Stirred soil texture variation |
-| **Total** | **48** | **9** | **81.25% inference accuracy** |
-
-> **Key Finding:** The `soil_moisture_september` dataset accounts for 67% of all inference errors due to bounding box annotations covering the full image area (width=height=1.0), providing no meaningful laser localization. Excluding this dataset, Phase 5 achieves **33/41 = 92.7% inference accuracy** across the remaining six datasets.
+| **Phase 6** | **YOLOv8 + corrected annotations + class mapping fix** | **95.3% mAP50** |
 
 ---
 
@@ -499,17 +523,17 @@ Phase 5 was validated on 48 unseen images sampled across all 7 datasets, achievi
 
 ## Technical Specification 
 
-| Parameter | ViT Phases | Phase 5 (YOLOv8) |
+| Parameter | ViT Phases | Phase 5 (YOLOv8) |Phase 6 (YOLOv8 corrected) |
 |---|---|---|
 | Architecture | ViT-Base-patch16-224 | YOLOv8s |
 | Hardware | Dual NVIDIA T4 GPUs | Dual NVIDIA T4 GPUs |
 | Optimizer | AdamW (2e-5 LR) | Adam (0.001 LR) |
 | Regularization | Dropout 0.1, weight decay 0.01 | Weight decay 0.0005 |
 | Label Smoothing | 0.1 | 0.1 |
-| Training Images | 717 (Phase 1-3) / 2,151 (Phase 4A-4B) | 717 |
+| Training Images | 717 (Phase 1-3) / 2,151 (Phase 4A-4B) | 717 | 1,026 |
 | Image Size | 224×224 | 640×640 |
-| Max Epochs | 40 | 50 (early stop at 46) |
-| Best Result | 90.64% accuracy (Phase 4B) | 95.5% mAP50 (Phase 5) |
+| Max Epochs | 40 | 50 (early stop at 46) |50 (early stop at 42) |
+| Best Result | 90.64% accuracy (Phase 4B) | 95.5% mAP50 | 95.3% mAP50 |
 | Governance Framework | NIST AI RMF 1.0, EO 14110 alignment | NIST AI RMF 1.0, EO 14110 alignment |
 
 The model architecture utilizes a pre-trained ViT-Base backbone. During initialization, the original ImageNet classifier head was replaced with a custom linear layer specialized for 11 soil moisture levels (0–10). This was confirmed by the weight initialization report, ensuring the transformer blocks were fine-tuned specifically to identify spectral diffraction patterns rather than general objects.
@@ -518,7 +542,7 @@ The model architecture utilizes a pre-trained ViT-Base backbone. During initiali
 
 ## 🏁 Conclusion
 
-This project successfully demonstrates that a **Vision Transformer (ViT) architecture** is effective at interpreting complex spectral patterns created by laser-soil interaction. Through five systematic development phases, the research progressed from a baseline whole-image classifier to a **YOLOv8** object detection architecture that simultaneously detects UV laser spots and predicts moisture levels in a single forward pass. The final Phase 5 model achieves 95.5% mAP50 across all 11 moisture classes, confirming that framing UV laser soil moisture classification as an object detection task is the architecturally correct approach. The integration of multi-spectral data (IR, UV, and RGB) allows for a robust classification system that could significantly improve automated irrigation efficiency and water conservation in precision agriculture. Future work will focus on re-annotating the soil_moisture_september dataset with precise laser region coordinates and extending the pipeline to real-time field deployment.
+This project successfully demonstrates that a **Vision Transformer (ViT) architecture** is effective at interpreting complex spectral patterns created by laser-soil interaction. Through five systematic development phases, the research progressed from a baseline whole-image classifier to a **YOLOv8** object detection architecture that simultaneously detects UV laser spots and predicts moisture levels in a single forward pass. The final Phase 6 model achieves 95.3% mAP50 on a fully corrected 1,026-image dataset, with perfect inference accuracy across five of seven datasets and an overall inference accuracy of 89.1% — an improvement of 7.85 percentage points over Phase 5. Future work (Phase 7) will focus on targeted augmentation to improve IR laser dataset performance and adjacent moisture level discrimination at high saturation levels (8, 9, 10), and extending the pipeline to real-time field deployment. The integration of multi-spectral data (IR, UV, and RGB) allows for a robust classification system that could significantly improve automated irrigation efficiency and water conservation in precision agriculture. 
 
 Throughout all phases, the project applied governance-first development principles - structured validation, dataset integrity controls, bias mitigation, and deployment risk benchmarking - demonstrating that responsible AI development is achievable within resource-constrained research environments and is essential to producing AI systems that can be trusted, audited, and safely extended across real-world deployment contexts.
 
