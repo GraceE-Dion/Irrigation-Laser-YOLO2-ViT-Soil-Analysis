@@ -337,6 +337,7 @@ the september datasets, correctly incorporating 124 previously excluded images a
 increasing the training set to 1,026 images. Overall inference accuracy improved
 from 81.25% to 89.1%.
 
+
 ---
 
 ## 🧪 Real-World Inference Test (Multi-Source Validation)
