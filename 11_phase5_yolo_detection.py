@@ -48,12 +48,17 @@ SOURCE_DIR = '/kaggle/working/source_data'
 YOLO_DIR   = '/kaggle/working/Master_YOLO'
 
 # Class mapping — numeric only
+# Class mapping — numeric only
 mapping = {
     'soil-moisture-1.0': '1', 'soil-moisture-2.0': '2',
     'soil-moisture-3.0': '3', 'soil-moisture-5.0': '5',
     'soil-moisture-8.2': '8',
     '0': '0', '1': '1', '2': '2', '3': '3', '4': '4',
     '5': '5', '6': '6', '7': '7', '8': '8', '9': '9', '10': '10',
+    # Level_X format from september datasets
+    'Level_0': '0', 'Level_1': '1', 'Level_2': '2', 'Level_3': '3',
+    'Level_4': '4', 'Level_5': '5', 'Level_6': '6', 'Level_7': '7',
+    'Level_8': '8', 'Level_9': '9', 'Level_10': '10',
 }
 
 if os.path.exists(YOLO_DIR):
