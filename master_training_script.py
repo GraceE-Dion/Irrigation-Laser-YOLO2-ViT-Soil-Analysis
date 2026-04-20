@@ -1651,7 +1651,7 @@ print(f"Location: {yaml_path}")
 with open(yaml_path, 'r') as f:
     print(yaml.safe_load(f))
 
-# Step 25: Train YOLOv8
+# Step 25: Train YOLOv8(Phase 6)
 
 from ultralytics import YOLO
 
@@ -1677,6 +1677,40 @@ results = model_yolo.train(
     label_smoothing=0.1,
     val=True,
 )
+
+print("YOLOv8 training complete!")
+print(f"Best model saved at: {results.save_dir}")
+
+# Step 25: Train YOLOv8 (Phase 7)
+# Step 25: Train YOLOv8
+from ultralytics import YOLO
+
+# Load pretrained YOLOv8 small model
+model_yolo = YOLO('yolov8s.pt')
+
+# Train — Phase 6 parameters (best performing model)
+results = model_yolo.train(
+    data=os.path.join(YOLO_DIR, 'data.yaml'),
+    epochs=50,
+    imgsz=640,
+    batch=16,
+    name='soil_moisture_yolo',
+    project='/kaggle/working/yolo_results',
+    exist_ok=True,
+    patience=10,         # early stopping
+    save=True,
+    plots=True,
+    device=0,            # GPU
+    workers=2,
+    lr0=0.001,
+    weight_decay=0.0005,
+    label_smoothing=0.1,
+    val=True,
+)
+
+# Phase 7 augmentation parameters (negative finding — did not improve over Phase 6)
+# patience=20, hsv_h=0.5, hsv_s=0.5, hsv_v=0.4,
+# fliplr=0.5, flipud=0.3, mosaic=1.0, mixup=0.2
 
 print("YOLOv8 training complete!")
 print(f"Best model saved at: {results.save_dir}")
