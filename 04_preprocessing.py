@@ -1,4 +1,5 @@
 # STAGE 4: Feature Extraction(Load raw-ds, processor, transforms)
+
 #Step 6: Load Datasets and Check Column Names
 
 from datasets import load_dataset, Image as HFImage
@@ -10,6 +11,16 @@ raw_ds = load_dataset(
 )
 
 raw_ds = raw_ds.cast_column("image", HFImage(decode=True))
+print(raw_ds)
+
+# Remap HuggingFace alphabetical indices to correct numerical indices
+# hf_to_correct was built in Step 4B
+def remap_label(example):
+    example['label'] = hf_to_correct[example['label']]
+    return example
+
+raw_ds = raw_ds.map(remap_label)
+print("Labels remapped to correct numerical indices")
 print(raw_ds)
 
 #Step 7: Defining Processor
