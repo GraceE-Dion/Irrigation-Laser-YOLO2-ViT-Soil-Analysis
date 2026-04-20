@@ -146,13 +146,13 @@ This project was developed with explicit attention to AI governance principles t
 | soil-moisture-v4 | 8/8 ✓ | 8/8 ✓ | — |
 | soil-moisture-v4-ir | 7/7 ✓ | 7/7 ✓ | — |
 | soil-moisture-v4-uv | 7/7 ✓ | 7/7 ✓ | — |
-| soil-moisture-ir | 6/7 | 7/7 ✓ | +1 improved |
+| soil-moisture-ir | 6/7 | 7/7 ✓ | +1 improved — IR dataset, sufficient samples |
 | soil-moisture-5sagf | 7/7 ✓ | 7/7 ✓ | — |
 | soil_moisture_september | 1/7 | 4/7 | +3 improved |
 | soil_moisture_stir_september | 5/7 | 1/5 | IR signature limitation |
 | **Total** | **39/48 (81.25%)** | **41/46 (89.1%)** | **+7.85% improvement** |
 
-> **Key Finding:** The `soil_moisture_september` dataset accounts for 67% of all inference errors due to bounding box annotations covering the full image area (width=height=1.0), providing no meaningful laser localization. Excluding this dataset, Phase 5 achieves **33/41 = 92.7% inference accuracy** across the remaining six datasets.
+> **Key Finding:** **Insufficient training samples (`soil_moisture_stir_september`):** The stir_september dataset is an IR laser dataset with only 1-4 training images per moisture level — insufficient for the model to reliably learn class boundaries. Note that `soil-moisture-ir` is also an IR laser dataset but achieves perfect inference accuracy due to adequate sample counts. The limitation is sample scarcity per class, not IR laser imaging inherently. Accuracy: 1/5 (20%).
 
 ---
 
@@ -485,7 +485,7 @@ This finding reflects the governance principle that model validation should be d
 
 **Development Phases: From Baseline to Object Detection**
 
-Following the initial baseline model, the research progressed through five systematic improvement phases, each building on findings from the previous stage.
+Following the initial baseline model, the research progressed through six systematic improvement phases, each building on findings from the previous stage.
 
 **Phase 1: Overfitting Correction**
 The baseline model exhibited overfitting, training loss diverged from validation loss at epoch 9 and validation accuracy plateaued at 97%, indicating inflated performance. Phase 1 introduced dropout regularization (0.1), reduced learning rate (2e-5), weight decay (0.01), cosine learning rate scheduling, and early stopping with patience of 3 epochs. The model trained for 17 epochs before early stopping triggered, achieving an honest baseline of 96.5% validation accuracy with significantly reduced overfitting.
@@ -504,6 +504,9 @@ Phase 4B added inverse frequency class weighting to the loss function, specifica
 
 **Phase 5: YOLOv8 Object Detection (Final Architecture)**
 To frame the problem as an object detection task, Phase 5 trained a YOLOv8s model treating each moisture level (0-10) as a distinct object class. YOLOv8 detects the UV laser spot and predicts the moisture level simultaneously in a single forward pass, eliminating the two-stage pipeline entirely. The model trained for 46 epochs before early stopping triggered, achieving 95.5% mAP50 across all 11 classes, a significant improvement over all ViT phases.
+
+**Phase 6: Corrected Annotations + Class Mapping Fix**
+Phase 6 addressed a critical data pipeline issue discovered during inference testing — a class index misalignment caused by Roboflow exporting class names in alphabetical rather than numerical order, causing `Level_10` to be assigned index 2 instead of index 10 across the september datasets. This resulted in 124 training images being incorrectly labeled or excluded entirely. Phase 6 introduced a HuggingFace label remapping correction (Step 4B), updated class mapping dictionaries across Steps 4, 12, and 23, and fixed a ground truth display error for the `soil-moisture-8.2` class. The corrected pipeline increased the training dataset from 717 to 1,026 images and improved overall inference accuracy from 81.25% to 89.1%, with five of seven datasets achieving perfect inference accuracy. The model trained for 42 epochs before early stopping triggered, achieving 95.3% mAP50 across all 11 classes.
 
 ---
 
