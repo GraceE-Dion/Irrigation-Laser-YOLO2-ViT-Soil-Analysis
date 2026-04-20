@@ -70,6 +70,7 @@ The model development progressed through five systematic phases, each addressing
 | Phase 4B | Laser crop + weighted loss | 90.64% | Best ViT result |
 | Phase 5 | YOLOv8 object detection | 95.5% mAP50 | Superseded |
 | **Phase 6** | **YOLOv8 + corrected annotations + class mapping fix** | **95.3% mAP50** | **Current best** |
+| Phase 7 | YOLOv8 + targeted augmentation | 93.7% mAP50 | Negative finding |
 
 ### Phase 1 Key Metrics
 - **Validation Accuracy:** 96.5%
@@ -131,6 +132,34 @@ The model development progressed through five systematic phases, each addressing
 | Level_4 | 97.2% | Level_10 | 75.9% |
 | Level_5 | 95.4% | **all** | **95.3%** | 
 
+### Phase 7 Key Metrics
+- **Overall mAP50:** 93.7%
+- **Precision:** 0.939
+- **Recall:** 0.909
+- **Best epoch:** 50 / 50 (no early stopping triggered)
+- **Training images:** 1,026 (same as Phase 6)
+- **Inference accuracy:** 86.9% across 46 unseen images (40/46 correct)
+- **Augmentation parameters added:** hsv_h=0.5, hsv_s=0.5, hsv_v=0.4, fliplr=0.5, flipud=0.3, mosaic=1.0, mixup=0.2, patience=20
+
+**Outcome:** Phase 7 did not improve over Phase 6. The aggressive hue shift (hsv_h=0.5) intended to simulate IR laser appearance during training introduced noise that hurt adjacent moisture level discrimination at levels 8, 9, and 10. Phase 6 remains the production model.
+
+### Cross-Dataset Inference Results — Phase 5 vs Phase 6 vs Phase 7
+
+| Dataset | Phase 5 | Phase 6 | Phase 7 | Notes |
+|---|---|---|---|---|
+| soil-moisture-v4 | 8/8 ✓ | 8/8 ✓ | 8/8 ✓ | Consistently perfect |
+| soil-moisture-v4-ir | 7/7 ✓ | 7/7 ✓ | 7/7 ✓ | Consistently perfect |
+| soil-moisture-v4-uv | 7/7 ✓ | 7/7 ✓ | 7/7 ✓ | Consistently perfect |
+| soil-moisture-ir | 6/7 | 7/7 ✓ | 7/7 ✓ | Improved Phase 6 onwards |
+| soil-moisture-5sagf | 7/7 ✓ | 7/7 ✓ | 7/7 ✓ | Consistently perfect |
+| soil_moisture_september | 1/7 | 4/7 | 3/6 | Phase 6 best |
+| soil_moisture_stir_september | 5/7 | 1/5 | 1/5 | IR limitation unchanged |
+| **Total** | **39/48 (81.25%)** | **41/46 (89.1%)** | **40/46 (86.9%)** | **Phase 6 best overall** |
+
+> **Key Finding:**  Phase 6 remains the best performing model with 89.1% inference accuracy. Phase 7 targeted augmentation confirmed that hue-shift simulation of IR laser signatures is insufficient to improve `soil_moisture_stir_september` classification — accuracy remained at 1/5 (20%) across both phases. Five of seven datasets achieve perfect inference accuracy consistently across Phase 6 and Phase 7. The `soil_moisture_stir_september` limitation is sample scarcity per class (1-4 images per moisture level) combined with a fundamentally different laser wavelength signature, not IR laser imaging inherently — `soil-moisture-ir` is also an IR dataset but achieves perfect accuracy due to adequate sample counts. The recommended path for Phase 8 is dedicated IR laser training data collection rather than augmentation-based simulation.
+
+---
+
 ## AI Governance and Responsible Development Principles
 This project was developed with explicit attention to AI governance principles that extend beyond model accuracy. The following governance mechanisms were integrated throughout the development lifecycle:
 - Honest performance reporting: The baseline overfitting result (98.11%) was retained in the evaluation record rather than discarded, demonstrating that negative findings have as much evidentiary value as positive ones.
@@ -138,21 +167,6 @@ This project was developed with explicit attention to AI governance principles t
 - Bias identification and mitigation: Per-class performance was tracked across all eleven moisture levels and all five development phases, producing a complete audit trail of bias identification and targeted mitigation through inverse-frequency class weighting.
 - Deployment risk assessment: Inference testing was conducted across all seven source datasets on unseen images, with dataset-specific reliability profiling enabling practitioners to make risk-informed deployment decisions rather than relying on aggregate accuracy alone.
 - Explainability: Annotated inference outputs display bounding boxes, confidence scores, ground truth labels, and correct/incorrect indicators for all 48 test images, providing full transparency of model decisions across diverse imaging conditions.
-
-### Cross-Dataset Inference Results — Phase 5 vs Phase 6
-
-| Dataset | Phase 5 | Phase 6 | Change |
-|---|---|---|---|
-| soil-moisture-v4 | 8/8 ✓ | 8/8 ✓ | — |
-| soil-moisture-v4-ir | 7/7 ✓ | 7/7 ✓ | — |
-| soil-moisture-v4-uv | 7/7 ✓ | 7/7 ✓ | — |
-| soil-moisture-ir | 6/7 | 7/7 ✓ | +1 improved — IR dataset, sufficient samples |
-| soil-moisture-5sagf | 7/7 ✓ | 7/7 ✓ | — |
-| soil_moisture_september | 1/7 | 4/7 | +3 improved |
-| soil_moisture_stir_september | 5/7 | 1/5 | IR signature limitation |
-| **Total** | **39/48 (81.25%)** | **41/46 (89.1%)** | **+7.85% improvement** |
-
-> **Key Finding:** **Insufficient training samples (`soil_moisture_stir_september`):** The stir_september dataset is an IR laser dataset with only 1-4 training images per moisture level — insufficient for the model to reliably learn class boundaries. Note that `soil-moisture-ir` is also an IR laser dataset but achieves perfect inference accuracy due to adequate sample counts. The limitation is sample scarcity per class, not IR laser imaging inherently. Accuracy: 1/5 (20%).
 
 ---
 
@@ -266,12 +280,26 @@ This project was developed with explicit attention to AI governance principles t
 <p align="center">
   <img src="images/phase6_val_batch0_pred.jpg" width="70%" />
 </p>
+<hr>
+
+<h3 align="center">Phase 7: Targeted Augmentation for IR Laser Performance</h3>
+<p align="center">
+  <img src="images/phase7_results.png" width="99%" />
+</p>
+<p align="center">
+  <img src="images/phase7_confusion_matrix.png" width="49%" />
+  <img src="images/phase7_confusion_matrix_normalized.png" width="49%" />
+</p>
+<p align="center">
+  <img src="images/phase7_val_batch0_pred.jpg" width="70%" />
+</p>
+<hr>
 
 
 **Convergence Analysis:** The baseline model trained for 10 epochs, with validation 
 accuracy climbing from 85.20% at Epoch 1 to a plateau of 98.11% at Epoch 10. However, 
 subsequent analysis revealed signs of overfitting — training loss diverged from 
-validation loss at Epoch 9, indicating inflated performance. Six development phases 
+validation loss at Epoch 9, indicating inflated performance. Seven development phases 
 were implemented to address this, progressively improving model reliability from a 
 regularized 96.5% honest baseline (Phase 1) through to a YOLOv8 object detection 
 architecture achieving 95.5% mAP50 (Phase 5).
@@ -361,7 +389,7 @@ generated during the validation session between the generic labels used in this
 documentation and the unique Roboflow file hashes present in the dynamic training 
 environment.
 
-### 📊 Detailed Inference Output
+### 📊 Detailed Inference Output — Phase 6 (Best Model)
 
 <h3 align="center">Multi-spectral ViT: Test Set Input Samples</h3>
 
@@ -468,7 +496,7 @@ environment.
 </p>
 
 <p align="center">
-  <em>Figure 1: Representative soil samples across 7 multi-spectral datasets used for final model inference.</em>
+ <em>Figure 1: Representative soil samples across 7 multi-spectral datasets used for final model inference (Phase 6 — best performing model, 89.1% inference accuracy).</em>
 </p>
 
 <hr>
@@ -507,6 +535,9 @@ To frame the problem as an object detection task, Phase 5 trained a YOLOv8s mode
 
 **Phase 6: Corrected Annotations + Class Mapping Fix**
 Phase 6 addressed a critical data pipeline issue discovered during inference testing — a class index misalignment caused by Roboflow exporting class names in alphabetical rather than numerical order, causing `Level_10` to be assigned index 2 instead of index 10 across the september datasets. This resulted in 124 training images being incorrectly labeled or excluded entirely. Phase 6 introduced a HuggingFace label remapping correction (Step 4B), updated class mapping dictionaries across Steps 4, 12, and 23, and fixed a ground truth display error for the `soil-moisture-8.2` class. The corrected pipeline increased the training dataset from 717 to 1,026 images and improved overall inference accuracy from 81.25% to 89.1%, with five of seven datasets achieving perfect inference accuracy. The model trained for 42 epochs before early stopping triggered, achieving 95.3% mAP50 across all 11 classes.
+
+**Phase 7: Targeted Augmentation for IR Laser Performance**
+Phase 7 applied aggressive augmentation parameters to address the IR laser classification weakness identified in Phase 6, specifically the `soil_moisture_stir_september` dataset which achieved only 1/5 inference accuracy. Augmentation included large hue shifts (hsv_h=0.5) to simulate IR laser color signatures, saturation and brightness variation (hsv_s=0.5, hsv_v=0.4), horizontal and vertical flipping, mosaic augmentation, and mixup (0.2) to improve adjacent class boundary learning. EarlyStopping patience was increased from 10 to 20 epochs. The model trained for all 50 epochs achieving 93.7% mAP50. However inference testing showed overall accuracy dropped from 89.1% to 86.9%, with `soil_moisture_stir_september` remaining at 1/5 and `soil_moisture_september` worsening from 4/7 to 3/6. The aggressive hue shift introduced training noise that degraded high moisture level discrimination (Levels 8, 9, 10) without meaningfully improving IR laser detection. Phase 6 remains the best performing model. This negative finding confirms that simulating IR laser appearance through hue augmentation alone is insufficient — dedicated IR training data collection remains the recommended path for Phase 8.
 
 ---
 
@@ -550,7 +581,7 @@ The model architecture utilizes a pre-trained ViT-Base backbone. During initiali
 
 ## 🏁 Conclusion
 
-This project successfully demonstrates that a **Vision Transformer (ViT) architecture** is effective at interpreting complex spectral patterns created by laser-soil interaction. Through five systematic development phases, the research progressed from a baseline whole-image classifier to a **YOLOv8** object detection architecture that simultaneously detects UV laser spots and predicts moisture levels in a single forward pass. The final Phase 6 model achieves 95.3% mAP50 on a fully corrected 1,026-image dataset, with perfect inference accuracy across five of seven datasets and an overall inference accuracy of 89.1% — an improvement of 7.85 percentage points over Phase 5. Future work (Phase 7) will focus on targeted augmentation to improve IR laser dataset performance and adjacent moisture level discrimination at high saturation levels (8, 9, 10), and extending the pipeline to real-time field deployment. The integration of multi-spectral data (IR, UV, and RGB) allows for a robust classification system that could significantly improve automated irrigation efficiency and water conservation in precision agriculture. 
+This project successfully demonstrates that a **Vision Transformer (ViT) architecture** is effective at interpreting complex spectral patterns created by laser-soil interaction. Through five systematic development phases, the research progressed from a baseline whole-image classifier to a **YOLOv8** object detection architecture that simultaneously detects UV laser spots and predicts moisture levels in a single forward pass. The final Phase 6 model achieves 95.3% mAP50 on a fully corrected 1,026-image dataset, with perfect inference accuracy across five of seven datasets and an overall inference accuracy of 89.1% — an improvement of 7.85 percentage points over Phase 5. Phase 7 explored targeted augmentation to improve IR laser dataset performance but confirmed that hue-shift augmentation alone is insufficient to simulate real IR laser signatures. Phase 6 remains the production model with 89.1% inference accuracy across 46 unseen images. Future work (Phase 8) will focus on dedicated IR laser training data collection and extending the pipeline to real-time field deployment. The integration of multi-spectral data (IR, UV, and RGB) allows for a robust classification system that could significantly improve automated irrigation efficiency and water conservation in precision agriculture. 
 
 Throughout all phases, the project applied governance-first development principles - structured validation, dataset integrity controls, bias mitigation, and deployment risk benchmarking - demonstrating that responsible AI development is achievable within resource-constrained research environments and is essential to producing AI systems that can be trusted, audited, and safely extended across real-world deployment contexts.
 
