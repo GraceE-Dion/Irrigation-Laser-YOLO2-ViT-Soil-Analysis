@@ -200,7 +200,7 @@ print("YOLOv8 training complete!")
 print(f"Best model saved at: {results.save_dir}")
 
 # Step 25: Train YOLOv8 (Phase 7)
-# Step 25: Train YOLOv8
+
 from ultralytics import YOLO
 
 # Load pretrained YOLOv8 small model
@@ -233,6 +233,8 @@ results = model_yolo.train(
 print("YOLOv8 training complete!")
 print(f"Best model saved at: {results.save_dir}")
 
+
+# Step 26: 
 
 #Step 26: Phase 5 — Collect YOLO auto-generated metrics
 import os
@@ -282,3 +284,61 @@ print(f"\nAll Phase 5 metrics zipped at: {zip_path}")
 
 from IPython.display import FileLink
 display(FileLink(zip_path))
+
+
+# Step 26 Phase 6: Collect YOLO auto-generated metrics
+import os
+import shutil
+import zipfile
+from IPython.display import FileLink, display
+
+yolo_results = '/kaggle/working/yolo_results/soil_moisture_yolo'
+output_dir   = '/kaggle/working/phase6_metrics'
+zip_path     = '/kaggle/working/phase6_metrics.zip'
+phase_label  = 'phase6'
+
+# Create output directory FIRST before any file operations
+os.makedirs(output_dir, exist_ok=True)
+
+# List all auto-generated files
+print(f'Available metric files:')
+for root, dirs, files in os.walk(yolo_results):
+    for file in files:
+        print(os.path.join(root, file))
+
+# Copy key metric files
+key_files = [
+    'confusion_matrix.png',
+    'confusion_matrix_normalized.png',
+    'results.png',
+    'PR_curve.png',
+    'F1_curve.png',
+    'val_batch0_pred.jpg',
+    'val_batch1_pred.jpg',
+    'val_batch2_pred.jpg',
+    'results.csv',
+]
+
+print(f"\nCopying key files to {output_dir}/")
+for file in key_files:
+    src = os.path.join(yolo_results, file)
+    dst = os.path.join(output_dir, f'{phase_label}_{file}')
+    if os.path.exists(src):
+        shutil.copy(src, dst)
+        print(f'Copied: {file} -> {phase_label}_{file}')
+    else:
+        print(f'Not found: {file}')
+
+# Zip — directory now guaranteed to exist
+with zipfile.ZipFile(zip_path, 'w') as zipf:
+    for file in os.listdir(output_dir):
+        zipf.write(os.path.join(output_dir, file), arcname=file)
+
+print(f'\nAll metrics zipped at: {zip_path}')
+display(FileLink(zip_path))
+
+#Step 26: Phase 7 just change the top two lines to the below
+# For Phase 7 change to:
+output_dir  = '/kaggle/working/phase7_metrics'
+zip_path    = '/kaggle/working/phase7_metrics.zip'
+phase_label = 'phase7'
