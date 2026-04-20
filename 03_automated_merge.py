@@ -69,6 +69,22 @@ for proj_folder in os.listdir(BASE_DIR):
 
 print("Consolidation complete!")
 
+# Step 4B: Build HuggingFace class index correction map
+import os
+
+MASTER_DIR = '/kaggle/working/Master_Soil_Moisture'
+
+# Build correction map: HuggingFace alphabetical idx -> correct numerical idx
+folders = sorted(os.listdir(os.path.join(MASTER_DIR, 'train')))
+hf_to_correct = {}
+for idx, folder in enumerate(folders):
+    hf_to_correct[idx] = int(folder)
+
+print("HuggingFace alphabetical index -> correct numerical class:")
+for hf_idx, correct_idx in hf_to_correct.items():
+    status = "✓" if hf_idx == correct_idx else "✗ FIXED"
+    print(f"  hf_idx {hf_idx} -> class {correct_idx} {status}")
+
 #Step 5: Verify Consolidation
 
 for split in ['train', 'validation', 'test']:
