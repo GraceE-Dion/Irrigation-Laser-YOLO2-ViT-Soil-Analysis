@@ -123,14 +123,20 @@ The model development progressed through five systematic phases, each addressing
 
 **Per-class mAP50 (Phase 6):**
 
-| Class | mAP50 | Class | mAP50 |
-|---|---|---|---|
-| Level_0 | 92.7% | Level_6 | 94.6% |
-| Level_1 | 89.1% | Level_7 | 93.6% |
-| Level_2 | 86.5% | Level_8 | 91.1% |
-| Level_3 | 89.4% | Level_9 | 70.2% |
-| Level_4 | 97.2% | Level_10 | 75.9% |
-| Level_5 | 95.4% | **all** | **95.3%** | 
+| Class | mAP50 |
+|---|---|
+| Level_0 | 92.7% |
+| Level_1 | 89.1% |
+| Level_2 | 86.5% |
+| Level_3 | 89.4% |
+| Level_4 | 97.2% |
+| Level_5 | 95.4% |
+| Level_6 | 94.6% |
+| Level_7 | 93.6% |
+| Level_8 | 91.1% |
+| Level_9 | 70.2% |
+| Level_10 | 75.9% |
+| **all** | **95.3%** |
 
 ### Phase 7 Key Metrics
 - **Overall mAP50:** 93.7%
