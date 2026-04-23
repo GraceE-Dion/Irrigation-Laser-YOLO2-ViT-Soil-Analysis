@@ -46,7 +46,7 @@ To ensure the Vision Transformer could accurately generalize soil moisture level
 
 3. **Feature Extraction** Utilizing the Vision Transformer’s patch-based embedding, the model decomposed the consolidated images into 16x16 flattened vector projections. This allowed the architecture to identify high-dimensional features, such as laser refraction intensity and moisture-dependent light scattering.
 
-4. **Model Specialization** The ViT-Base architecture was specialized for this task by modifying the MLP head to classify 11 distinct moisture levels (0–10). This involved fine-tuning the transformer layers to prioritize the spectral fusion of the three input sources.
+4. **Model Specialization** The ViT-Base architecture was specialized for this task by modifying the MLP head to classify 11 distinct moisture levels (0-10). This involved fine-tuning the transformer layers to prioritize the spectral fusion of the three input sources.
 
 5. **Training & Real-Time Evaluation** The model underwent 10 epochs of supervised learning on Dual T4 GPUs. Real-time evaluation was performed at the end of each epoch using a partitioned validation set to monitor convergence and prevent overfitting, ensuring the "Attention" weights were stabilizing correctly.
 
@@ -68,8 +68,8 @@ The model development progressed through five systematic phases, each addressing
 | Phase 3 | Laser crop ViT, 40 epochs | 87.68% | Architecture change |
 | Phase 4A | Laser crop + noise augmentation | 89.66% | Improving |
 | Phase 4B | Laser crop + weighted loss | 90.64% | Best ViT result |
-| Phase 5 | YOLOv8 object detection | 95.5% mAP50 / 81.25% inference | Superseded — incomplete dataset |
-| **Phase 6** | **YOLOv8 + corrected annotations + class mapping fix** | **95.3% mAP50 / 89.1% inference** | **Current best — complete dataset** |
+| Phase 5 | YOLOv8 object detection | 95.5% mAP50 / 81.25% inference | Superseded - incomplete dataset |
+| **Phase 6** | **YOLOv8 + corrected annotations + class mapping fix** | **95.3% mAP50 / 89.1% inference** | **Current best - complete dataset** |
 | Phase 7 | YOLOv8 + targeted augmentation | 93.7% mAP50 | Negative finding |
 
 ### Phase 1 Key Metrics
@@ -300,7 +300,7 @@ This project was developed with explicit attention to AI governance principles t
 
 **Convergence Analysis:** The baseline model trained for 10 epochs, with validation 
 accuracy climbing from 85.20% at Epoch 1 to a plateau of 98.11% at Epoch 10. However, 
-subsequent analysis revealed signs of overfitting — training loss diverged from 
+subsequent analysis revealed signs of overfitting - training loss diverged from 
 validation loss at Epoch 9, indicating inflated performance. Seven development phases 
 were implemented to address this, progressively improving model reliability from a 
 regularized 96.5% honest baseline (Phase 1) through to a YOLOv8 object detection 
@@ -391,7 +391,7 @@ generated during the validation session between the generic labels used in this
 documentation and the unique Roboflow file hashes present in the dynamic training 
 environment.
 
-### 📊 Detailed Inference Output — Phase 6 (Best Model)
+### 📊 Detailed Inference Output - Phase 6 (Best Model)
 
 <h3 align="center">Multi-spectral ViT: Test Set Input Samples</h3>
 
@@ -508,7 +508,7 @@ environment.
 
 ### 🔬 Laser Pattern Visual Investigation
 
-A systematic visual comparison was conducted across four datasets to analyze laser pattern consistency and identify the root cause of `soil_moisture_stir_september` performance limitations. Full investigation code is available in `15_laser_pattern_investigation.py`.
+A systematic visual comparison was conducted across four datasets to analyze laser pattern consistency and identify the root cause of `soil_moisture_stir_september` performance limitations. Full investigation code is available in `13_laser_pattern_investigation.py`.
 
 **Visual findings:**
 
@@ -519,12 +519,11 @@ A systematic visual comparison was conducted across four datasets to analyze las
 | soil-moisture-v4-uv | UV | Controlled container | Strong, consistent signal | 100% |
 | soil-moisture-ir | IR | Controlled container | Consistent white spot | 100% |
 
-**Key conclusion:** Performance is driven by capture environment consistency, not laser wavelength. Both IR datasets perform differently — `soil-moisture-ir` achieves perfect accuracy in a controlled setup while `soil_moisture_stir_september` achieves only 20% in an uncontrolled field environment with disturbed soil surface.
+**Key conclusion:** Performance is driven by capture environment consistency, not laser wavelength. Both IR datasets perform differently - `soil-moisture-ir` achieves perfect accuracy in a controlled setup while `soil_moisture_stir_september` achieves only 20% in an uncontrolled field environment with disturbed soil surface.
 
 <p align="center">
   <img src="images/laser_pattern_comparison.jpg" width="99%" />
 </p>
-
 
 
 ### **Known Dataset Limitations** 
@@ -582,6 +581,7 @@ Phase 7 applied aggressive augmentation parameters to address the IR laser class
 | Phase 4B | Laser crop + noise aug + weighted loss | 90.64% |
 | **Phase 5** | **YOLOv8 object detection** | **95.5% mAP50** |
 | **Phase 6** | **YOLOv8 + corrected annotations + class mapping fix** | **95.3% mAP50** |
+| Phase 7 | YOLOv8 + targeted augmentation (hsv_h=0.5, mixup=0.2) | 93.7% mAP50 — negative finding |
 
 ---
 
@@ -590,19 +590,20 @@ Phase 7 applied aggressive augmentation parameters to address the IR laser class
 ---
 
 ## Technical Specification 
-
-| Parameter | ViT Phases | Phase 5 (YOLOv8) | Phase 6 (YOLOv8 corrected) |
-|---|---|---|---|
-| Architecture | ViT-Base-patch16-224 | YOLOv8s | YOLOv8s |
-| Hardware | Dual NVIDIA T4 GPUs | Dual NVIDIA T4 GPUs | NVIDIA T4 GPU |
-| Optimizer | AdamW (2e-5 LR) | Adam (0.001 LR) | Adam (0.001 LR) |
-| Regularization | Dropout 0.1, weight decay 0.01 | Weight decay 0.0005 | Weight decay 0.0005 |
-| Label Smoothing | 0.1 | 0.1 | 0.1 |
-| Training Images | 717 (Phase 1-3) / 2,151 (Phase 4A-4B) | 717 | 1,026 |
-| Image Size | 224×224 | 640×640 | 640×640 |
-| Max Epochs | 40 | 50 (early stop at 46) | 50 (early stop at 42) |
-| Best Result | 90.64% accuracy (Phase 4B) | 95.5% mAP50 | 95.3% mAP50 |
-| Governance Framework | NIST AI RMF 1.0, EO 14110 | NIST AI RMF 1.0, EO 14110 | NIST AI RMF 1.0, EO 14110 |
+| Parameter | ViT Phases | Phase 5 (YOLOv8) | Phase 6 (YOLOv8 corrected) | Phase 7 (YOLOv8 augmented) |
+|---|---|---|---|---|
+| Architecture | ViT-Base-patch16-224 | YOLOv8s | YOLOv8s | YOLOv8s |
+| Hardware | Dual NVIDIA T4 GPUs | Dual NVIDIA T4 GPUs | NVIDIA T4 GPU | NVIDIA T4 GPU |
+| Optimizer | AdamW (2e-5 LR) | Adam (0.001 LR) | Adam (0.001 LR) | Adam (0.001 LR) |
+| Regularization | Dropout 0.1, weight decay 0.01 | Weight decay 0.0005 | Weight decay 0.0005 | Weight decay 0.0005 |
+| Label Smoothing | 0.1 | 0.1 | 0.1 | 0.1 |
+| Training Images | 717 (Phase 1-3) / 2,151 (Phase 4A-4B) | 717 | 1,026 | 1,026 |
+| Image Size | 224×224 | 640×640 | 640×640 | 640×640 |
+| Max Epochs | 40 | 50 (early stop at 46) | 50 (early stop at 42) | 50 (all epochs completed) |
+| Augmentation | Standard | None | None | hsv_h=0.5, hsv_s=0.5, hsv_v=0.4, mixup=0.2 |
+| Patience | 3-10 | 10 | 10 | 20 |
+| Best Result | 90.64% accuracy (Phase 4B) | 95.5% mAP50 | 95.3% mAP50 | 93.7% mAP50 |
+| Governance Framework | NIST AI RMF 1.0, EO 14110 | NIST AI RMF 1.0, EO 14110 | NIST AI RMF 1.0, EO 14110 | NIST AI RMF 1.0, EO 14110 |
 
 The model architecture utilizes a pre-trained ViT-Base backbone. During initialization, the original ImageNet classifier head was replaced with a custom linear layer specialized for 11 soil moisture levels (0–10). This was confirmed by the weight initialization report, ensuring the transformer blocks were fine-tuned specifically to identify spectral diffraction patterns rather than general objects.
 
