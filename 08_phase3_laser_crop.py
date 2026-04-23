@@ -1,5 +1,5 @@
 #STAGE 8: Crop Laser Regions
-# Step 12: Crop Laser Regions from All Datasets
+# ─── Step 12: Crop Laser Regions from All Datasets────────────────────────────────────────
 import os
 import shutil
 import yaml
@@ -112,7 +112,7 @@ for proj_folder in os.listdir(SOURCE_DIR):
 print(f"Laser crops complete! {copied} saved, {skipped} skipped")
 print(f"Saved to: {LASER_DIR}")
 
-# Step 13: Verify Laser Crop Dataset
+# ─── Step 13: Verify Laser Crop Dataset────────────────────────────────────────
 for split in ['train', 'validation', 'test']:
     split_path = os.path.join(LASER_DIR, split)
     if os.path.exists(split_path):
@@ -148,7 +148,7 @@ plt.savefig('laser_crops_sample.png', dpi=150, bbox_inches='tight')
 plt.show()
 print("Sample crops visualized!")
 
-# Step 14: Load Laser Crop Dataset and Train ViT
+# ─── Step 14: Load Laser Crop Dataset and Train ViT────────────────────────────────────────
 
 from datasets import load_dataset
 from datasets import Image as HFImage
@@ -206,7 +206,70 @@ laser_test  = laser_ds['test'].with_transform(transform_val)
 
 print("Laser dataset ready!")
 
-# Step 15B — Phase 3 Extended Metrics
+
+# ─── Step 15: Train ViT on Laser Crops────────────────────────────────────────
+import evaluate
+import numpy as np
+from transformers import (
+    ViTForImageClassification,
+    TrainingArguments,
+    Trainer
+)
+
+# Fresh model
+model_v3 = ViTForImageClassification.from_pretrained(
+    'google/vit-base-patch16-224-in21k',
+    num_labels=11,
+    id2label={i: f"Level {i}" for i in range(11)},
+    label2id={f"Level {i}": i for i in range(11)},
+    ignore_mismatched_sizes=True,
+    hidden_dropout_prob=0.1,
+    attention_probs_dropout_prob=0.1
+)
+
+metric = evaluate.load("accuracy")
+def compute_metrics(eval_pred):
+    predictions, labels = eval_pred
+    predictions = np.argmax(predictions, axis=1)
+    return metric.compute(predictions=predictions, references=labels)
+
+training_args_v3 = TrainingArguments(
+    output_dir="./results_v4",
+    save_strategy="no",
+    eval_strategy="epoch",
+    logging_steps=5,
+    num_train_epochs=40,
+    per_device_train_batch_size=16,
+    learning_rate=2e-5,
+    weight_decay=0.01,
+    warmup_steps=100,
+    lr_scheduler_type="cosine",
+    load_best_model_at_end=False,
+    metric_for_best_model="accuracy",
+    greater_is_better=True,
+    remove_unused_columns=False,
+    label_smoothing_factor=0.1,
+    save_total_limit=1,
+)
+
+trainer_v3 = Trainer(
+    model=model_v3,
+    args=training_args_v3,
+    train_dataset=laser_train,
+    eval_dataset=laser_val,
+    processing_class=processor,
+    compute_metrics=compute_metrics,
+)
+
+trainer_v3.train()
+
+# Save final model
+trainer_v3.save_model('./results_v4/final_model')
+processor.save_pretrained('./results_v4/final_model')
+print("Phase 3 model saved!")
+
+
+# ─── Step 15B — Phase 3 Extended Metrics────────────────────────────────────────
 
 import numpy as np
 import matplotlib.pyplot as plt
