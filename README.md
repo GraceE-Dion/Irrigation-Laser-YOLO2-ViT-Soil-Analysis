@@ -309,14 +309,19 @@ accuracy climbing from 85.20% at Epoch 1 to a plateau of 98.11% at Epoch 10. How
 subsequent analysis revealed signs of overfitting - training loss diverged from 
 validation loss at Epoch 9, indicating inflated performance. Seven development phases 
 were implemented to address this, progressively improving model reliability from a 
-regularized 96.5% honest baseline (Phase 1) through to a YOLOv8 object detection 
-architecture achieving 95.5% mAP50 (Phase 5).
+regularized 96.5% honest baseline (Phase 1)through to a corrected YOLOv8 object detection 
+architecture achieving 95.3% mAP50 and 89.1% inference accuracy (Phase 6). Phase 7 targeted 
+augmentation confirmed that hue-shift simulation is insufficient for IR laser improvement, 
+with Phase 6 remaining the best performing model.
 
 **Observation:** Across all phases, the model demonstrated consistent improvement in 
-diagonal density on the confusion matrix. The final YOLOv8 architecture effectively 
-detects UV laser spots and classifies moisture levels in a single forward pass, 
-producing perfect results across five of seven datasets and confirming the object 
-detection approach as the architecturally correct solution for this task.
+diagonal density on the confusion matrix. The final Phase 6 YOLOv8 architecture effectively 
+detects UV laser spots and classifies moisture levels in a single forward pass, producing 
+perfect results across five of seven datasets and confirming the object detection approach 
+as the architecturally correct solution for this task. Phase 7 experimentation further confirmed 
+that performance limitations in the remaining two datasets are rooted in fundamental capture 
+environment inconsistency and soil disturbance physics rather than model architecture or 
+augmentation strategy.
 
 ## 📊 Training Performance & Convergence
 
