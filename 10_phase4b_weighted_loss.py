@@ -26,7 +26,7 @@
 # - Level 10 remained perfect at 1.00
 # - Best ViT result across all phases
 
-#Step 19B: Weighted Trainer
+# ──Step 19B: Weighted Trainer────────────────────────────────────────
 import torch
 import numpy as np
 import evaluate
