@@ -506,6 +506,27 @@ environment.
 <h3 align="center">Detailed Inference Output</h3>
 
 
+### 🔬 Laser Pattern Visual Investigation
+
+A systematic visual comparison was conducted across four datasets to analyze laser pattern consistency and identify the root cause of `soil_moisture_stir_september` performance limitations. Full investigation code is available in `15_laser_pattern_investigation.py`.
+
+**Visual findings:**
+
+| Dataset | Laser Type | Capture Environment | Laser Visibility | Inference Accuracy |
+|---|---|---|---|---|
+| soil_moisture_stir_september | IR | Uncontrolled field | Dim, small, or invisible | 20% |
+| soil_moisture_september | UV | Field | Consistent blue glow | 57% |
+| soil-moisture-v4-uv | UV | Controlled container | Strong, consistent signal | 100% |
+| soil-moisture-ir | IR | Controlled container | Consistent white spot | 100% |
+
+**Key conclusion:** Performance is driven by capture environment consistency, not laser wavelength. Both IR datasets perform differently — `soil-moisture-ir` achieves perfect accuracy in a controlled setup while `soil_moisture_stir_september` achieves only 20% in an uncontrolled field environment with disturbed soil surface.
+
+<p align="center">
+  <img src="images/laser_pattern_comparison.png" width="99%" />
+</p>
+
+
+
 ### **Known Dataset Limitations** 
 
 During inference testing across 48 sampled images drawn from seven Roboflow datasets, the model identified a case in the soil_moisture_stir_september dataset where the predicted label (Level 2) diverged significantly from the assigned ground truth label (Level 10). Visual inspection of the flagged image revealed dry-textured soil with a compact, un-saturated surface, no visible moisture sheen, and a small, concentrated UV laser spot showing minimal diffusion across the soil surface. Diffusion breadth and intensity of the UV laser signal are primary visual indicators of moisture saturation in laser-based detection; the image in question displayed neither characteristic consistent with a Level 10 classification.
