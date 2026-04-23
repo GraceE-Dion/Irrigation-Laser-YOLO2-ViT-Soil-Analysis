@@ -1,4 +1,4 @@
-#STAGE 12: Phase 5: Two-Stage Inference Pipeline + Annotated Image Generation
+# ──STAGE 12: Phase 5: Two-Stage Inference Pipeline + Annotated Image Generation───────────────────────
 #
 # Background:
 # This script implements the final inference pipeline using the trained
@@ -36,7 +36,7 @@
 # - Excluding soil_moisture_september: 92.7% inference accuracy
 #   across remaining 6 well-annotated datasets
 
-#Step 27: Phase 5 Inference Images
+# ──Step 27: Phase 5 Inference Images───────────────────────
 
 import os
 import random
@@ -193,7 +193,7 @@ print(f"ZIP: {ZIP_PATH}")
 from IPython.display import FileLink
 display(FileLink(ZIP_PATH))
 
-# Step 27: Phase 6 & 7 — Two-Stage Inference Pipeline + Annotated Images
+#  ──Step 27: Phase 6 & 7 — Two-Stage Inference Pipeline + Annotated Images───────────────────────
 
 import os
 import random
