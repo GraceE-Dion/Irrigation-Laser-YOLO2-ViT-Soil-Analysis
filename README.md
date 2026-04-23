@@ -136,7 +136,7 @@ The model development progressed through five systematic phases, each addressing
 | Level_8 | 91.1% |
 | Level_9 | 70.2% |
 | Level_10 | 75.9% |
-| **all** | **95.3%** |
+| **All** | **95.3%** |
 
 ### Phase 7 Key Metrics
 - **Overall mAP50:** 93.7%
@@ -320,7 +320,7 @@ detection approach as the architecturally correct solution for this task.
 
 ## 📊 Training Performance & Convergence
 
-The model development progressed through five phases across multiple training runs on 
+The model development progressed through seven phases across multiple training runs on
 Dual T4 GPUs, using Cross-Entropy Loss with progressive architectural improvements. 
 The table below summarizes the key convergence metrics across all phases:
 
@@ -334,6 +334,7 @@ The table below summarizes the key convergence metrics across all phases:
 | Phase 4B | + Weighted loss | 22.16% | 90.64% | 40 |
 | **Phase 5** | **YOLOv8 detection** | — | **95.5% mAP50** | **46 (early stop)** |
 | **Phase 6** | **YOLOv8 + corrected annotations** | — | **95.3% mAP50** | **42 (early stop)** |
+| Phase 7 | YOLOv8 + targeted augmentation | — | 93.7% mAP50 — negative finding | 50 (all epochs) |
 
 #### Why the Architecture Evolved: From ViT to YOLOv8
 
