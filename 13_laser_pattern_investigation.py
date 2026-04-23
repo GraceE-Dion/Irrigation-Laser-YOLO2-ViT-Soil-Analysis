@@ -1,4 +1,4 @@
-# 15_laser_pattern_investigation.py
+# 13_laser_pattern_investigation.py
 # Laser Pattern Visual Investigation
 # Following instructor feedback on soil_moisture_stir_september performance drop
 # This script compares laser reflection patterns across all 7 datasets to identify
