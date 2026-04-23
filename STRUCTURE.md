@@ -21,6 +21,7 @@ phases, from baseline ViT training through to YOLOv8 object detection.
 | `12_phase6_corrected_annotations.py` | Phase 6 | Corrected class mapping + HuggingFace index fix — 95.3% mAP50, 89.1% inference accuracy |
 | `13_phase7_augmentation.py` | Phase 7 | Targeted augmentation for IR laser performance — 93.7% mAP50 (negative finding) |
 | `14_inference_pipeline.py` | Inference | Two-stage inference with annotated output images and bounding boxes |
+| `15_laser_pattern_investigation.py` | Investigation | Visual comparison of laser patterns across all 7 datasets — confirms capture environment as primary performance driver |
 | `master_training_script.py` | Full Pipeline | End-to-end pipeline from data download to final inference |
 | `requirements.txt` | Setup | All dependencies for full reproduction |
 
@@ -53,6 +54,7 @@ Irrigation-Laser-YOLO2-ViT-Soil-Analysis/
 ├── 12_phase6_corrected_annotations.py      # Class mapping fix + HuggingFace index correction
 ├── 13_phase7_augmentation.py               # Targeted IR augmentation (negative finding)
 ├── 14_inference_pipeline.py                # Final inference and annotation
+├── 15_laser_pattern_investigation.py   # Laser pattern visual analysis across datasets
 ├── master_training_script.py               # Full end-to-end pipeline
 ├── requirements.txt                        # All dependencies
 └── README.md                               # Main project report
