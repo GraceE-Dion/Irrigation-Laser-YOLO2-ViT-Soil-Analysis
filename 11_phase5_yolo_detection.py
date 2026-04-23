@@ -169,7 +169,43 @@ print(f"Location: {yaml_path}")
 with open(yaml_path, 'r') as f:
     print(yaml.safe_load(f))
 
-# Step 25: Train YOLOv8 (Phase 6)
+# ── Step 25: Train YOLOv8 (Phase 5): Initial YOLOv8 Training ────────────────────────────────────────
+# 717 training images, standard parameters
+# Result: 95.5% mAP50, 81.25% inference accuracy (39/48)
+# Note: september datasets had wrong class indices — results partially inflated
+
+model_yolo = YOLO('yolov8s.pt')
+
+results = model_yolo.train(
+    data=os.path.join(YOLO_DIR, 'data.yaml'),
+    epochs=50,
+    imgsz=640,
+    batch=16,
+    name='soil_moisture_yolo',
+    project='/kaggle/working/yolo_results',
+    exist_ok=True,
+    patience=10,
+    save=True,
+    plots=True,
+    device=0,
+    workers=2,
+    lr0=0.001,
+    weight_decay=0.0005,
+    label_smoothing=0.1,
+    val=True,
+)
+
+print("Phase 5 YOLOv8 training complete!")
+print(f"Best model saved at: {results.save_dir}")
+
+
+# ── Step 25: Train YOLOv8 (Phase 6)- Corrected Annotations + Class Mapping Fix ──────────────────────
+# 1,026 training images (124 previously excluded september images now included)
+# Fixes applied:
+#   - Level_X mapping entries added to Steps 4, 12, 23
+#   - HuggingFace alphabetical index correction (Step 4B)
+#   - soil-moisture-8.2 ground truth display fix (Step 27)
+# Result: 95.3% mAP50, 89.1% inference accuracy (41/46) — BEST MODEL
 
 from ultralytics import YOLO
 
@@ -226,6 +262,14 @@ results = model_yolo.train(
     val=True,
 )
 
+# ── Step 25: Train YOLOv8 (Phase 7): Targeted Augmentation — Negative Finding ───────────────────────
+# Hypothesis: aggressive hue shift (hsv_h=0.5) would simulate IR laser color
+# and improve soil_moisture_stir_september classification
+# Result: 93.7% mAP50, 86.9% inference accuracy (40/46) — worse than Phase 6
+# Conclusion: hue-shift augmentation degraded high moisture level discrimination
+# (Levels 8, 9, 10) without improving IR laser detection.
+# Root cause identified through visual analysis: fundamental capture environment
+# inconsistency in stir_september, not augmentation-addressable
 # Phase 7 augmentation parameters (negative finding — did not improve over Phase 6)
 # patience=20, hsv_h=0.5, hsv_s=0.5, hsv_v=0.4,
 # fliplr=0.5, flipud=0.3, mosaic=1.0, mixup=0.2
@@ -236,7 +280,7 @@ print(f"Best model saved at: {results.save_dir}")
 
 # Step 26: 
 
-#Step 26: Phase 5 — Collect YOLO auto-generated metrics
+#──Step 26: Phase 5 — Collect YOLO auto-generated metrics ───────────────────────
 import os
 import shutil
 
@@ -286,7 +330,7 @@ from IPython.display import FileLink
 display(FileLink(zip_path))
 
 
-# Step 26 Phase 6: Collect YOLO auto-generated metrics
+# ──Step 26 Phase 6: Collect YOLO auto-generated metrics ───────────────────────
 import os
 import shutil
 import zipfile
@@ -337,7 +381,7 @@ with zipfile.ZipFile(zip_path, 'w') as zipf:
 print(f'\nAll metrics zipped at: {zip_path}')
 display(FileLink(zip_path))
 
-#Step 26: Phase 7 just change the top two lines to the below
+#──Step 26: Phase 7 just change the top two lines to the below ───────────────────────
 # For Phase 7 change to:
 output_dir  = '/kaggle/working/phase7_metrics'
 zip_path    = '/kaggle/working/phase7_metrics.zip'
