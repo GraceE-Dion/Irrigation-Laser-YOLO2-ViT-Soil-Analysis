@@ -30,7 +30,7 @@
 # - Early stopping triggered at epoch 46, best at epoch 36
 # - 5 of 7 datasets achieved perfect inference accuracy
 
-# Step 22: Install YOLOv8
+# ──Step 22: Install YOLOv8 ────────────────────────────────────────
 
 !pip install ultralytics -q
 
@@ -38,7 +38,7 @@ import ultralytics
 ultralytics.checks()
 print("YOLOv8 ready!")
 
-# Step 23: Prepare YOLOv8 Dataset
+# ──Step 23: Prepare YOLOv8 Dataset ────────────────────────────────────────
 
 import os
 import shutil
@@ -145,7 +145,7 @@ for split in ['train', 'valid', 'test']:
     if os.path.exists(img_path):
         print(f"{split}: {len(os.listdir(img_path))} images")
 
-# Step 24: Create YOLOv8 data.yaml
+# ──Step 24: Create YOLOv8 data.yaml────────────────────────────────────────
 
 import yaml
 
@@ -278,7 +278,7 @@ print("YOLOv8 training complete!")
 print(f"Best model saved at: {results.save_dir}")
 
 
-#──Step 26: Phase 5 — Collect YOLO auto-generated metrics ───────────────────────
+# ── Step 26: Phase 5 — Collect YOLO auto-generated metrics ───────────────────────
 import os
 import shutil
 
@@ -328,7 +328,7 @@ from IPython.display import FileLink
 display(FileLink(zip_path))
 
 
-# ──Step 26 Phase 6: Collect YOLO auto-generated metrics ───────────────────────
+# ── Step 26 Phase 6: Collect YOLO auto-generated metrics ───────────────────────
 import os
 import shutil
 import zipfile
@@ -379,7 +379,7 @@ with zipfile.ZipFile(zip_path, 'w') as zipf:
 print(f'\nAll metrics zipped at: {zip_path}')
 display(FileLink(zip_path))
 
-#──Step 26: Phase 7 just change the top two lines to the below ───────────────────────
+# ── Step 26: Phase 7 just change the top two lines to the below ───────────────────────
 # For Phase 7 change to:
 output_dir  = '/kaggle/working/phase7_metrics'
 zip_path    = '/kaggle/working/phase7_metrics.zip'
