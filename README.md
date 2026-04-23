@@ -522,7 +522,7 @@ A systematic visual comparison was conducted across four datasets to analyze las
 **Key conclusion:** Performance is driven by capture environment consistency, not laser wavelength. Both IR datasets perform differently — `soil-moisture-ir` achieves perfect accuracy in a controlled setup while `soil_moisture_stir_september` achieves only 20% in an uncontrolled field environment with disturbed soil surface.
 
 <p align="center">
-  <img src="images/laser_pattern_comparison.png" width="99%" />
+  <img src="images/laser_pattern_comparison.jpg" width="99%" />
 </p>
 
 
