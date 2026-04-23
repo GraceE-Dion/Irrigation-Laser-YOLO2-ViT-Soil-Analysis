@@ -235,7 +235,7 @@ results = model_yolo.train(
 print("YOLOv8 training complete!")
 print(f"Best model saved at: {results.save_dir}")
 
-# Step 25: Train YOLOv8 (Phase 7)
+# ── Step 25: Train YOLOv8 (Phase 7)──────────────────────
 
 from ultralytics import YOLO
 
@@ -277,8 +277,6 @@ results = model_yolo.train(
 print("YOLOv8 training complete!")
 print(f"Best model saved at: {results.save_dir}")
 
-
-# Step 26: 
 
 #──Step 26: Phase 5 — Collect YOLO auto-generated metrics ───────────────────────
 import os
