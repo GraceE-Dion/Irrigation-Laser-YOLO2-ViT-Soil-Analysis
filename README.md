@@ -68,8 +68,8 @@ The model development progressed through five systematic phases, each addressing
 | Phase 3 | Laser crop ViT, 40 epochs | 87.68% | Architecture change |
 | Phase 4A | Laser crop + noise augmentation | 89.66% | Improving |
 | Phase 4B | Laser crop + weighted loss | 90.64% | Best ViT result |
-| Phase 5 | YOLOv8 object detection | 95.5% mAP50 | Superseded |
-| **Phase 6** | **YOLOv8 + corrected annotations + class mapping fix** | **95.3% mAP50** | **Current best** |
+| Phase 5 | YOLOv8 object detection | 95.5% mAP50 / 81.25% inference | Superseded — incomplete dataset |
+| **Phase 6** | **YOLOv8 + corrected annotations + class mapping fix** | **95.3% mAP50 / 89.1% inference** | **Current best — complete dataset** |
 | Phase 7 | YOLOv8 + targeted augmentation | 93.7% mAP50 | Negative finding |
 
 ### Phase 1 Key Metrics
