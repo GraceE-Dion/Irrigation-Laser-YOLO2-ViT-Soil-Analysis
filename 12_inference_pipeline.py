@@ -1,4 +1,4 @@
-# ──STAGE 12: Phase 5: Two-Stage Inference Pipeline + Annotated Image Generation───────────────────────
+# STAGE 12: Phase 5: Two-Stage Inference Pipeline + Annotated Image Generation
 #
 # Background:
 # This script implements the final inference pipeline using the trained
