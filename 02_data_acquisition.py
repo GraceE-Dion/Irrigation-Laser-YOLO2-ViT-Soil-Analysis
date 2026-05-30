@@ -7,8 +7,8 @@ projects = [
     ("robotics-lab-1", "soil-moisture-v4-uv", 1),
     ("robotics-lab-1", "soil-moisture-ir", 1),
     ("robotics-lab-1", "soil-moisture-5sagf", 1),
-    ("robotics-lab-1", "soil_moisture_september", 4),
-    ("robotics-lab-1", "soil_moisture_stir_september", 1)
+    ("robotics-lab-1", "soil_moisture_september", 8),
+    ("robotics-lab-1", "soil_moisture_stir_september", 4)
 ]
 
 BASE_DIR = '/kaggle/working/source_data'
